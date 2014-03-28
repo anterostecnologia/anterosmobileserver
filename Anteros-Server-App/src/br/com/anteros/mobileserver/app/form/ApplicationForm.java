@@ -172,6 +172,7 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 		cbPoolType.addItem(PoolDatasource.POOL_C3P0);
 		cbPoolType.addItem(PoolDatasource.POOL_TOMCAT);
 		cbPoolType.addItem(PoolDatasource.POOL_JNDI);
+		cbPoolType.addItem(PoolDatasource.JDBC_WITHOUT_PO0L);
 		cbPoolType.setRequired(true);
 		cbPoolType.setCaption("Gerenciador conexões");
 		cbPoolType.setRequiredError("Informe o gerenciador de conexões da aplicação.");

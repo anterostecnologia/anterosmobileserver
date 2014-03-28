@@ -354,8 +354,7 @@ public class ConfigurationForm extends CustomComponent {
 		cbTipoPool.addItem(PoolDatasource.POOL_C3P0);
 		cbTipoPool.addItem(PoolDatasource.POOL_TOMCAT);
 		cbTipoPool.addItem(PoolDatasource.POOL_JNDI);
-		
-		
+		cbTipoPool.addItem(PoolDatasource.JDBC_WITHOUT_PO0L);
 
 		// lblTipoPool
 		lblTipoPool = new Label();

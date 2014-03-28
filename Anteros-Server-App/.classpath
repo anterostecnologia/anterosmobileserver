@@ -11,8 +11,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javassist-3.14.0-GA.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.12-bin.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/anteros-chameleon.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Anteros-Persistence"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Anteros-Server-Core"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/logback-access-1.0.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/logback-classic-1.0.0.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/logback-core-1.0.0.jar"/>
@@ -44,5 +42,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/validation-api-1.0.0.GA.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/vaadin-6.8.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/ojdbc6.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Anteros-Persistence"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Anteros-Server-Core"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

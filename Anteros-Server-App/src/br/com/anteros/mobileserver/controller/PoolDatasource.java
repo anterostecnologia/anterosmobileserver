@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import br.com.anteros.persistence.sql.datasource.JDBCDataSource;
 import br.com.anteros.persistence.sql.datasource.JNDIDataSourceFactory;
 import br.com.anteros.persistence.util.ReflectionUtils;
 
@@ -15,6 +16,7 @@ public class PoolDatasource {
 	public static final String POOL_C3P0 = "CP30";
 	public static final String POOL_TOMCAT = "Tomcat JDBC Pool";
 	public static final String POOL_JNDI = "Via JNDI";
+	public static final String JDBC_WITHOUT_PO0L = "JDBC sem Pool";
 
 	private Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
 
@@ -95,6 +97,8 @@ public class PoolDatasource {
 				Object ds = dataSourceClass.newInstance();
 				ReflectionUtils.invokeMethod(ds, "setPoolProperties", properties);
 				dataSource = (DataSource) ds;
+			}else if (JDBC_WITHOUT_PO0L.equals(connectionPoolType)) {
+				dataSource = new JDBCDataSource(driverClass, user, password, url);
 			}
 		}
 		return dataSource;
