@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+	<Resource  name="jdbc/AnterosDB"
+               auth="Container"
+               url="jdbc:oracle:thin:@10.0.0.20/ajr"
+               user="empsys"
+               password="L657NKJRAC"
+               factory="oracle.ucp.jdbc.PoolDataSourceImpl"
+               type="oracle.ucp.jdbc.PoolDataSource"
+               connectionFactoryClassName="oracle.jdbc.pool.OracleDataSource"
+               connectionPoolName="AnterosPool"
+               connectionWaitTimeout="30"
+               minPoolSize="10"
+               maxPoolSize="50"
+               inactiveConnectionTimeout="20"
+               timeoutCheckInterval="60"
+               validateConnectionOnBorrow="true"
+               sqlForValidateConnection="SELECT 1 FROM DUAL" />	
+</Context>
