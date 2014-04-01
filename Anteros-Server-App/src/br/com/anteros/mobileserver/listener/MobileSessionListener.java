@@ -25,6 +25,8 @@ import javax.servlet.http.HttpSessionListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.anteros.persistence.session.SQLSession;
+
 public class MobileSessionListener implements HttpSessionBindingListener, HttpSessionActivationListener,
 		HttpSessionAttributeListener, HttpSessionListener {
 
@@ -67,11 +69,12 @@ public class MobileSessionListener implements HttpSessionBindingListener, HttpSe
 		 * Libera a conexão SQL usada pela sessão
 		 */
 		if (sessionEvent.getSession().getAttribute("sqlSession") != null) {
-			sessionEvent.getSession().removeAttribute("sqlSession");
-			sessionEvent.getSession().removeAttribute("synchronismManager");
-			sessionEvent.getSession().removeAttribute("metadataManager");
+			try {
+				((SQLSession) sessionEvent.getSession().getAttribute("sqlSession")).close();
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 			log.info("Liberou conexão SQL da Sessão " + sessionEvent.getSession().getId());
 		}
-
 	}
 }

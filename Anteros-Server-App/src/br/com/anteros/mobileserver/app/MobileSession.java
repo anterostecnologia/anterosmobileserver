@@ -49,6 +49,7 @@ public class MobileSession {
 			SQLSession session = getSQLSession();
 			synchronismManager = new SynchronismManager(session, context.getDictionaryManager(),
 					context.buildSessionFactory(false));
+			httpSession.setAttribute("synchronismManager", synchronismManager);
 		}
 		sqlSessionContext = getSQLSession();
 		return synchronismManager;
@@ -60,9 +61,10 @@ public class MobileSession {
 	}
 
 	public SQLSession getSQLSession() throws Exception {
-		if (sqlSessionContext == null || sqlSessionContext.getConnection().isClosed()) {
+		if (sqlSessionContext == null) {
 			SQLSessionFactory sf = context.buildSessionFactory(false);
 			sqlSessionContext = sf.getNewSession();
+			httpSession.setAttribute("sqlSession", sqlSessionContext);
 		}
 		return sqlSessionContext;
 	}

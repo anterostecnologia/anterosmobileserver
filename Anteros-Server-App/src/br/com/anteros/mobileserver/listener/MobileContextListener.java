@@ -43,10 +43,10 @@ public class MobileContextListener implements ServletContextListener, ServletCon
 			event.getServletContext().setAttribute("mobileServerContext", mobileServerContext);
 			if (!mobileServerContext.isConfigured())
 				log.info("ATENÇÃO - O servidor ainda não foi configurado. Acesse a tela de configuração no browser.");
-			else 
+			else
 				mobileServerContext.initializeContext("ANTEROS_MOBILE_SERVER");
 		} catch (Exception e) {
-			log.info("ATENÇÃO - Ocorrreu um ERRO iniciando CONEXÃO com o BANCO de DADOS "+e.getMessage());
+			log.info("ATENÇÃO - Ocorrreu um ERRO iniciando CONEXÃO com o BANCO de DADOS " + e.getMessage());
 			e.printStackTrace();
 		}
 		log.info("FIM DA INICIALIZAÇÃO DO CONTEXTO DA APLICAÇÃO ANTEROS MOBILE SERVER");
@@ -62,8 +62,13 @@ public class MobileContextListener implements ServletContextListener, ServletCon
 	}
 
 	public void contextDestroyed(ServletContextEvent event) {
-		MobileServerContext mobileServerContext = (MobileServerContext) event.getServletContext().getAttribute("dictionaryManager");
-		mobileServerContext.finalizeContext();
+		try {
+			MobileServerContext mobileServerContext = (MobileServerContext) event.getServletContext().getAttribute(
+					"dictionaryManager");
+			mobileServerContext.finalizeContext();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 		log.info("FINALIZAÇÃO DO CONTEXTO DA APLICAÇÃO ANTEROS MOBILE SERVER");
 	}
 }
