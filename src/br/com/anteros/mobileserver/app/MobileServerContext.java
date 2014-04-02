@@ -273,12 +273,13 @@ public class MobileServerContext {
 		return newSession;
 	}
 
-	public void removeMobileSession(HttpSession httpSession) {
+	public MobileSession removeMobileSession(HttpSession httpSession) {
 		for (MobileSession session : mobileSessions) {
 			if (session.getHttpSession().equals(httpSession))
 				mobileSessions.remove(session);
-			return;
+			return session;
 		}
+		return null;
 	}
 
 	public DictionaryManager getDictionaryManager() throws Exception {
