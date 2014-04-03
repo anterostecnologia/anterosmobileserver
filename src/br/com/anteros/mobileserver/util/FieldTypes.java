@@ -35,7 +35,6 @@ public class FieldTypes {
     public static final String TIMESTAMP = "TIMESTAMP";
     public static final String BLOB = "BLOB";
     public static final String CLOB = "CLOB";
-    public static final String SUBSTITUITION = "SUBSTITUITION";
 
     public static final LinkedHashMap<String,String> getFieldTypes() {
         if (types.isEmpty()) {
@@ -49,7 +48,6 @@ public class FieldTypes {
             types.put("93", TIMESTAMP);
             types.put("2004", BLOB);
             types.put("2005", CLOB);
-            types.put("999999", SUBSTITUITION);
         }
         return types;
     }

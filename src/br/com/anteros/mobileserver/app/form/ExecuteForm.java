@@ -94,7 +94,7 @@ public class ExecuteForm extends VerticalLayout implements ValueChangeListener {
 			if (synchronism instanceof ProcedureSynchronism)
 				parameters = ((ProcedureSynchronism) synchronism).getParameters();
 			for (ParameterSynchronism param : parameters) {
-				if (param.getParameterType().intValue() == ParameterSynchronism.INPUT) {
+				if (param.getParameterType().intValue() == ParameterSynchronism.INPUT || param.getParameterType().intValue() == ParameterSynchronism.SUBSTITUITION) {
 					String value = FieldTypes.getFieldTypes().get(param.getParameterDataType().intValue() + "");
 					if (value != null) {
 						if (FieldTypes.UNKNOW.equalsIgnoreCase(value)) {
@@ -131,14 +131,6 @@ public class ExecuteForm extends VerticalLayout implements ValueChangeListener {
 							TextField field = new TextField();
 							field.setCaption(param.getName());
 							field.setWidth("150px");
-							field.setRequired(true);
-							field.setRequiredError("Informe o valor para o campo " + param.getName());
-							executeForm.addField(param.getName(), field);
-							fields.add(field);
-						} else if (FieldTypes.SUBSTITUITION.equalsIgnoreCase(value)) {
-							TextField field = new TextField();
-							field.setCaption(param.getName());
-							field.setWidth("300px");
 							field.setRequired(true);
 							field.setRequiredError("Informe o valor para o campo " + param.getName());
 							executeForm.addField(param.getName(), field);

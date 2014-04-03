@@ -143,6 +143,8 @@ public class ParameterForm extends VerticalLayout implements ClickListener {
 		fldParameterType.setRequiredError("Informe o tipo do parâmetro.");
 		fldParameterType.addItem("INPUT");
 		fldParameterType.addItem("OUTPUT");
+		if (objectOwner instanceof TableSynchronism)
+			fldParameterType.addItem("SUBSTITUITION");
 		fldParameterType.setStyleName("small");
 
 		parameterForm.addField("fldId", fldId);
@@ -230,7 +232,13 @@ public class ParameterForm extends VerticalLayout implements ClickListener {
 		parameterSynchronism.setObjectOwner(objectOwner);
 		parameterSynchronism.setParameterDataType(new Long(FieldTypes.getFieldValueByName(fldParameterDataType
 				.getValue() + "")));
-		parameterSynchronism.setParameterType(fldParameterType.getValue() == "INPUT" ? new Long(0) : new Long(1));
+		if (fldParameterType.getValue() == "INPUT") {
+			parameterSynchronism.setParameterType(ParameterSynchronism.INPUT);
+		} else if (fldParameterType.getValue() == "OUTPUT") {
+			parameterSynchronism.setParameterType(ParameterSynchronism.OUTPUT);
+		} else {
+			parameterSynchronism.setParameterType(ParameterSynchronism.SUBSTITUITION);
+		}
 	}
 
 	protected void changeDataTreeItem() {
@@ -273,7 +281,13 @@ public class ParameterForm extends VerticalLayout implements ClickListener {
 					.intValue() + ""));
 		}
 		if (parameterSynchronism.getParameterType() != null)
-			fldParameterType.setValue((parameterSynchronism.getParameterType().intValue() == 0 ? "INPUT" : "OUTPUT"));
+			if (parameterSynchronism.getParameterType().intValue() == ParameterSynchronism.INPUT) {
+				fldParameterType.setValue("INPUT");
+			} else if (parameterSynchronism.getParameterType().intValue() == ParameterSynchronism.OUTPUT) {
+				fldParameterType.setValue("OUTPUT");
+			} else {
+				fldParameterType.setValue("SUBSTITUITION");
+			}
 	}
 
 	public String getLastAction() {
