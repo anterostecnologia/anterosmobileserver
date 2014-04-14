@@ -5,6 +5,9 @@
         <dependent-module archiveName="Anteros-MobileServer-Core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Anteros-MobileServer-Core/Anteros-MobileServer-Core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="Anteros-Persistence.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Anteros-Persistence/Anteros-Persistence">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/AnterosMobileServer/build/classes"/>
         <property name="context-root" value="Anteros-MobileServer"/>
     </wb-module>

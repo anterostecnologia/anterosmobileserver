@@ -4,6 +4,7 @@
 	<comment></comment>
 	<projects>
 		<project>Anteros-MobileServer-Core</project>
+		<project>Anteros-Persistence</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
