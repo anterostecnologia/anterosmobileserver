@@ -3,7 +3,6 @@
 	<name>Anteros-MobileServer</name>
 	<comment></comment>
 	<projects>
-		<project>Anteros-Persistence</project>
 		<project>Anteros-MobileServer-Core</project>
 	</projects>
 	<buildSpec>
