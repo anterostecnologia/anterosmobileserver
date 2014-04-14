@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 
 import br.com.anteros.mobile.core.synchronism.engine.SynchronismManager;
 import br.com.anteros.mobile.core.synchronism.model.ApplicationSynchronism;
+import br.com.anteros.mobileserver.listener.MobileContextListener;
 import br.com.anteros.persistence.session.SQLSession;
 import br.com.anteros.persistence.session.SQLSessionFactory;
 
@@ -49,7 +50,7 @@ public class MobileSession {
 			SQLSession session = getSQLSession();
 			synchronismManager = new SynchronismManager(session, context.getDictionaryManager(),
 					context.buildSessionFactory(false));
-			httpSession.setAttribute("synchronismManager", synchronismManager);
+			httpSession.setAttribute(MobileContextListener.SYNCHRONISM_MANAGER, synchronismManager);
 		}
 		sqlSessionContext = getSQLSession();
 		return synchronismManager;
@@ -64,7 +65,7 @@ public class MobileSession {
 		if (sqlSessionContext == null) {
 			SQLSessionFactory sf = context.buildSessionFactory(false);
 			sqlSessionContext = sf.getNewSession();
-			httpSession.setAttribute("sqlSession", sqlSessionContext);
+			httpSession.setAttribute(MobileContextListener.SQL_SESSION, sqlSessionContext);
 		}
 		return sqlSessionContext;
 	}

@@ -69,6 +69,9 @@ public class ConfigurationForm extends CustomComponent {
 	private TextField fldURL;
 	private Label lblDialect;
 	private ComboBox cbDialect;
+	private Label lblQueryTimeout;
+	private Label lblQueryTimeoutSeconds;
+	private TextField fldQueryTimeout;
 
 	public ConfigurationForm() {
 		buildMainLayout();
@@ -97,7 +100,6 @@ public class ConfigurationForm extends CustomComponent {
 		cbDialect.addItem(MobileServerContext.MYSQL);
 		cbDialect.addItem(MobileServerContext.FIREBIRD);
 		cbDialect.addItem(MobileServerContext.POSTGRESQL);
-		
 
 		// lblDialect
 		lblDialect = new Label();
@@ -105,43 +107,38 @@ public class ConfigurationForm extends CustomComponent {
 		lblDialect.setWidth("-1px");
 		lblDialect.setHeight("-1px");
 		lblDialect.setValue("Dialeto");
-		
-		
 
 		// fldURL
 		fldURL = new TextField();
 		fldURL.setImmediate(false);
 		fldURL.setWidth("458px");
 		fldURL.setHeight("-1px");
-		
+
 		// lblURL
 		lblURL = new Label();
 		lblURL.setImmediate(false);
 		lblURL.setWidth("-1px");
 		lblURL.setHeight("-1px");
 		lblURL.setValue("Url conexão");
-		
-		
 
 		// fldUser
 		fldUser = new TextField();
 		fldUser.setImmediate(false);
 		fldUser.setWidth("157px");
 		fldUser.setHeight("-1px");
-		
+
 		// lblUser
 		lblUser = new Label();
 		lblUser.setImmediate(false);
 		lblUser.setWidth("-1px");
 		lblUser.setHeight("-1px");
 		lblUser.setValue("Usuário");
-		
+
 		// fldPassword
 		fldPassword = new PasswordField();
 		fldPassword.setImmediate(false);
 		fldPassword.setWidth("157px");
 		fldPassword.setHeight("-1px");
-		
 
 		// lblPassword
 		lblPassword = new Label();
@@ -149,14 +146,12 @@ public class ConfigurationForm extends CustomComponent {
 		lblPassword.setWidth("-1px");
 		lblPassword.setHeight("-1px");
 		lblPassword.setValue("Senha");
-		
 
 		// fldCatalog
 		fldCatalog = new TextField();
 		fldCatalog.setImmediate(false);
 		fldCatalog.setWidth("157px");
 		fldCatalog.setHeight("-1px");
-		
 
 		// lblCatalog
 		lblCatalog = new Label();
@@ -177,7 +172,6 @@ public class ConfigurationForm extends CustomComponent {
 		lblSchema.setWidth("-1px");
 		lblSchema.setHeight("-1px");
 		lblSchema.setValue("Schema");
-		
 
 		// imgAnteros
 		imgAnteros = new Embedded();
@@ -187,7 +181,6 @@ public class ConfigurationForm extends CustomComponent {
 		imgAnteros.setSource(new ThemeResource("images/anteros_mobile_server45.png"));
 		imgAnteros.setType(1);
 		imgAnteros.setMimeType("image/png");
-		
 
 		// fldInitPoolSize
 		fldInitPoolSize = new TextField();
@@ -217,14 +210,12 @@ public class ConfigurationForm extends CustomComponent {
 		lblInitialPoolSize.setWidth("-1px");
 		lblInitialPoolSize.setHeight("-1px");
 		lblInitialPoolSize.setValue("Tamanho inicial");
-		
 
 		// fldMinPoolSize
 		fldMinPoolSize = new TextField();
 		fldMinPoolSize.setImmediate(false);
 		fldMinPoolSize.setWidth("157px");
 		fldMinPoolSize.setHeight("-1px");
-
 
 		// lblMinPoolSize
 		lblMinPoolSize = new Label();
@@ -233,7 +224,6 @@ public class ConfigurationForm extends CustomComponent {
 		lblMinPoolSize.setHeight("-1px");
 		lblMinPoolSize.setValue("Tamanho Mínimo");
 
-
 		// lblMaxPoolSize
 		lblMaxPoolSize = new Label();
 		lblMaxPoolSize.setImmediate(false);
@@ -241,20 +231,17 @@ public class ConfigurationForm extends CustomComponent {
 		lblMaxPoolSize.setHeight("-1px");
 		lblMaxPoolSize.setValue("Tamanho Máximo");
 
-
 		// fldMaxPoolSize
 		fldMaxPoolSize = new TextField();
 		fldMaxPoolSize.setImmediate(false);
 		fldMaxPoolSize.setWidth("157px");
 		fldMaxPoolSize.setHeight("-1px");
-		
 
 		// fldAcquireIncrement
 		fldAcquireIncrement = new TextField();
 		fldAcquireIncrement.setImmediate(false);
 		fldAcquireIncrement.setWidth("157px");
 		fldAcquireIncrement.setHeight("-1px");
-
 
 		// lblAcquireIncrement
 		lblAcquireIncrement = new Label();
@@ -263,14 +250,12 @@ public class ConfigurationForm extends CustomComponent {
 		lblAcquireIncrement.setHeight("-1px");
 		lblAcquireIncrement.setValue("Incremento");
 
-
 		// chShowSql
 		chShowSql = new CheckBox();
 		chShowSql.setCaption("Mostrar SQL's no log");
 		chShowSql.setImmediate(false);
 		chShowSql.setWidth("-1px");
 		chShowSql.setHeight("-1px");
-		
 
 		// chFormatSql
 		chFormatSql = new CheckBox();
@@ -278,7 +263,6 @@ public class ConfigurationForm extends CustomComponent {
 		chFormatSql.setImmediate(false);
 		chFormatSql.setWidth("-1px");
 		chFormatSql.setHeight("-1px");
-
 
 		// btnOk
 		btnOk = new Button();
@@ -295,7 +279,6 @@ public class ConfigurationForm extends CustomComponent {
 		btnCancel.setImmediate(true);
 		btnCancel.setWidth("-1px");
 		btnCancel.setHeight("-1px");
-		
 
 		// imgConfiguration
 		imgConfiguration = new Embedded();
@@ -305,7 +288,6 @@ public class ConfigurationForm extends CustomComponent {
 		imgConfiguration.setSource(new ThemeResource("images/configuration.png"));
 		imgConfiguration.setType(1);
 		imgConfiguration.setMimeType("image/png");
-		
 
 		// lblAccessControl
 		lblAccessControl = new Label();
@@ -314,7 +296,6 @@ public class ConfigurationForm extends CustomComponent {
 		lblAccessControl.setHeight("-1px");
 		lblAccessControl.setValue("<b>Controle de acesso</b>");
 		lblAccessControl.setContentMode(3);
-		
 
 		// lblAccessUser
 		lblAccessUser = new Label();
@@ -322,14 +303,12 @@ public class ConfigurationForm extends CustomComponent {
 		lblAccessUser.setWidth("-1px");
 		lblAccessUser.setHeight("-1px");
 		lblAccessUser.setValue("Usuário");
-		
 
 		// fldAccessUser
 		fldAccessUser = new TextField();
 		fldAccessUser.setImmediate(false);
 		fldAccessUser.setWidth("157px");
 		fldAccessUser.setHeight("-1px");
-		
 
 		// lblAccessPassword
 		lblAccessPassword = new Label();
@@ -337,14 +316,12 @@ public class ConfigurationForm extends CustomComponent {
 		lblAccessPassword.setWidth("-1px");
 		lblAccessPassword.setHeight("-1px");
 		lblAccessPassword.setValue("Senha");
-		
 
 		// fldAccessPassword
 		fldAccessPassword = new PasswordField();
 		fldAccessPassword.setImmediate(false);
 		fldAccessPassword.setWidth("157px");
 		fldAccessPassword.setHeight("-1px");
-		
 
 		// cbTipoPool
 		cbTipoPool = new ComboBox();
@@ -362,7 +339,6 @@ public class ConfigurationForm extends CustomComponent {
 		lblTipoPool.setWidth("103px");
 		lblTipoPool.setHeight("-1px");
 		lblTipoPool.setValue("Gerenciador pool");
-		
 
 		// fldJNDI
 		fldJNDI = new TextField();
@@ -376,8 +352,27 @@ public class ConfigurationForm extends CustomComponent {
 		lblJNDI.setWidth("-1px");
 		lblJNDI.setHeight("-1px");
 		lblJNDI.setValue("Recurso JNDI");
-		
-		
+
+		// lblQueryTimeout
+		lblQueryTimeout = new Label();
+		lblQueryTimeout.setImmediate(false);
+		lblQueryTimeout.setWidth("-1px");
+		lblQueryTimeout.setHeight("-1px");
+		lblQueryTimeout.setValue("Timeout query");
+
+		// fldMaxPoolSize
+		fldQueryTimeout = new TextField();
+		fldQueryTimeout.setImmediate(false);
+		fldQueryTimeout.setWidth("100px");
+		fldQueryTimeout.setHeight("-1px");
+
+		// lblQueryTimeoutSeconds
+		lblQueryTimeoutSeconds = new Label();
+		lblQueryTimeoutSeconds.setImmediate(false);
+		lblQueryTimeoutSeconds.setWidth("-1px");
+		lblQueryTimeoutSeconds.setHeight("-1px");
+		lblQueryTimeoutSeconds.setValue("segundos");
+
 		mainLayout.addComponent(cbDialect, "top:20.0px;left:269.0px;");
 		mainLayout.addComponent(lblDialect, "top:17.0px;left:223.0px;");
 		mainLayout.addComponent(fldURL, "top:44.0px;left:269.0px;");
@@ -406,7 +401,10 @@ public class ConfigurationForm extends CustomComponent {
 		mainLayout.addComponent(fldAcquireIncrement, "top:297.0px;left:269.0px;");
 		mainLayout.addComponent(lblAcquireIncrement, "top:298.0px;left:200.0px;");
 		mainLayout.addComponent(chShowSql, "top:234.0px;left:571.0px;");
-		mainLayout.addComponent(chFormatSql, "top:258.0px;left:571.0px;");
+		mainLayout.addComponent(chFormatSql, "top:250.0px;left:571.0px;");
+		mainLayout.addComponent(lblQueryTimeout, "top:297.0px;left:480.0px;");
+		mainLayout.addComponent(fldQueryTimeout, "top:298.0px;left:571.0px;");
+		mainLayout.addComponent(lblQueryTimeoutSeconds, "top:297.0px;left:675.0px;");
 		mainLayout.addComponent(imgConfiguration, "top:153.0px;left:30.0px;");
 		mainLayout.addComponent(lblAccessControl, "top:328.0px;left:180.0px;");
 		mainLayout.addComponent(lblAccessUser, "top:350.0px;left:220.0px;");
@@ -415,10 +413,6 @@ public class ConfigurationForm extends CustomComponent {
 		mainLayout.addComponent(fldAccessPassword, "top:348.0px;left:571.0px;");
 		mainLayout.addComponent(btnOk, "top:394.0px;left:580.0px;");
 		mainLayout.addComponent(btnCancel, "top:394.0px;left:648.0px;");
-		
-		
-
-
 
 		return mainLayout;
 	}
@@ -493,6 +487,14 @@ public class ConfigurationForm extends CustomComponent {
 
 	public ComboBox getCbTipoPool() {
 		return cbTipoPool;
+	}
+
+	public TextField getFldQueryTimeout() {
+		return fldQueryTimeout;
+	}
+
+	public void setFldQueryTimeout(TextField fldQueryTimeout) {
+		this.fldQueryTimeout = fldQueryTimeout;
 	}
 
 }

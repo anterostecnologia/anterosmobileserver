@@ -2,13 +2,13 @@
     <wb-module deploy-name="AnterosMobileServer">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <dependent-module archiveName="Anteros-Server-Core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Anteros-Server-Core/Anteros-Server-Core">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="Anteros-Persistence.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Anteros-Persistence/Anteros-Persistence">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="Anteros-MobileServer-Core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/Anteros-MobileServer-Core/Anteros-MobileServer-Core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/AnterosMobileServer/build/classes"/>
-        <property name="context-root" value="Anteros-Server-App"/>
+        <property name="context-root" value="Anteros-MobileServer"/>
     </wb-module>
 </project-modules>

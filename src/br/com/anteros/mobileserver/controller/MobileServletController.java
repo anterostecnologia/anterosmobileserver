@@ -10,16 +10,16 @@ import org.slf4j.LoggerFactory;
 import br.com.anteros.mobile.core.communication.HttpConnectionServer;
 import br.com.anteros.mobile.core.protocol.MobileRequest;
 import br.com.anteros.mobile.core.protocol.MobileResponse;
-import br.com.anteros.mobile.core.synchronism.engine.DictionaryManager;
 import br.com.anteros.mobile.core.synchronism.engine.SynchronismManager;
 import br.com.anteros.mobile.core.synchronism.exception.ActionNotFoundException;
 import br.com.anteros.mobile.core.synchronism.exception.ApplicationNotFoundException;
 import br.com.anteros.mobileserver.app.MobileServerContext;
 import br.com.anteros.mobileserver.app.MobileSession;
-import br.com.anteros.persistence.session.SQLSession;
+import br.com.anteros.mobileserver.listener.MobileContextListener;
 
 public class MobileServletController extends HttpConnectionServer {
 
+	
 	private static Logger log = LoggerFactory.getLogger(MobileServletController.class);
 	private static final long serialVersionUID = 1L;
 
@@ -29,8 +29,8 @@ public class MobileServletController extends HttpConnectionServer {
 		
 		response.addHeader("Connection", "Keep-Alive");
 		response.addHeader("Keep-Alive", "timeout=120000");
-		if (session.getAttribute("status") != null) {
-			if (!((String) session.getAttribute("status")).equals("liberado")) {
+		if (session.getAttribute(MobileContextListener.STATUS) != null) {
+			if (!((String) session.getAttribute(MobileContextListener.STATUS)).equals(MobileContextListener.LIBERADO)) {
 				log.debug("A execução da sua última requisição a este servidor está sendo processada. Por favor aguarde um tempo e tente novamente. Caso não tenha sucesso em suas próximas tentativas favor contactar o Administrador do Sistema."
 						+ " ##" + mobileRequest.getClientId());
 				MobileResponse mobileResponse = new MobileResponse();
@@ -50,12 +50,7 @@ public class MobileServletController extends HttpConnectionServer {
 			mobileResponse
 					.setStatus("ATENÇÃO - O servidor ainda não foi configurado. Acesse a tela de configuração no browser.");
 			return mobileResponse;
-		}
-
-		/*
-		 * 5 minutos
-		 */
-		session.setMaxInactiveInterval(60 * 5);
+		}		
 
 		log.info(session.getId() + " Requisição recebida" + " ##" + mobileRequest.getClientId());
 		log.info(mobileRequest.toString() + " ##" + mobileRequest.getClientId());
@@ -76,7 +71,7 @@ public class MobileServletController extends HttpConnectionServer {
 
 		if (mobileSession != null) {
 			/*
-			 * Obtém o SynchronismManager da Sessão do Usuário
+			 * Obtém o SynchronismManager da sessão do usuário
 			 */
 
 			SynchronismManager synchronismManager = null;
@@ -91,7 +86,7 @@ public class MobileServletController extends HttpConnectionServer {
 			}
 
 			try {
-				session.setAttribute("status", "executando");
+				session.setAttribute(MobileContextListener.STATUS, MobileContextListener.EXECUTANDO);
 				mobileResponse = synchronismManager.executeRequest(mobileRequest);
 				log.info(session.getId() + " Resposta a ser enviada" + " ##" + mobileRequest.getClientId());
 				mobileResponse.showDetails();
@@ -145,7 +140,7 @@ public class MobileServletController extends HttpConnectionServer {
 						.append(" Fim requisição - Executou -> R O L L B A C K").append(" ##")
 						.append(mobileRequest.getClientId()).toString());
 			} finally {
-				session.setAttribute("status", "liberado");
+				session.setAttribute(MobileContextListener.STATUS, MobileContextListener.LIBERADO);
 			}
 		}
 		return mobileResponse;
@@ -154,14 +149,9 @@ public class MobileServletController extends HttpConnectionServer {
 	public MobileSession getMobileSession(HttpSession session) throws Exception {
 		synchronized (session) {
 			MobileServerContext mobileServerContext = (MobileServerContext) this.getServletContext().getAttribute(
-					"mobileServerContext");
+					MobileContextListener.MOBILE_SERVER_CONTEXT);
 			return mobileServerContext.getMobileSession(session);
 		}
 	}
 
-	protected DictionaryManager getDictionaryManager(HttpSession session) {
-		DictionaryManager dictionaryManager = (DictionaryManager) session.getServletContext().getAttribute(
-				"dictionaryManager");
-		return dictionaryManager;
-	}
 }

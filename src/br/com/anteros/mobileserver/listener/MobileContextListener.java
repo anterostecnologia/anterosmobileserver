@@ -28,6 +28,14 @@ import br.com.anteros.mobileserver.app.MobileServerContext;
 
 public class MobileContextListener implements ServletContextListener, ServletContextAttributeListener {
 
+	public static final String MOBILE_SERVER_CONTEXT = "mobileServerContext";
+	public static final String DICTIONARY_MANAGER = "dictionaryManager";
+	public static final String SYNCHRONISM_MANAGER = "synchronismManager";
+	public static final String SQL_SESSION = "sqlSession";
+	public static final String STATUS = "status";
+	public static final Object LIBERADO = "liberado";
+	public static final Object EXECUTANDO = "executando";
+	
 	private static Logger log = LoggerFactory.getLogger(MobileContextListener.class);
 
 	public MobileContextListener() {
@@ -40,7 +48,7 @@ public class MobileContextListener implements ServletContextListener, ServletCon
 
 		try {
 			MobileServerContext mobileServerContext = new MobileServerContext(new DictionaryManager());
-			event.getServletContext().setAttribute("mobileServerContext", mobileServerContext);
+			event.getServletContext().setAttribute(MOBILE_SERVER_CONTEXT, mobileServerContext);
 			if (!mobileServerContext.isConfigured())
 				log.info("ATENÇÃO - O servidor ainda não foi configurado. Acesse a tela de configuração no browser.");
 			else
@@ -64,8 +72,9 @@ public class MobileContextListener implements ServletContextListener, ServletCon
 	public void contextDestroyed(ServletContextEvent event) {
 		try {
 			MobileServerContext mobileServerContext = (MobileServerContext) event.getServletContext().getAttribute(
-					"dictionaryManager");
+					MOBILE_SERVER_CONTEXT);
 			mobileServerContext.finalizeContext();
+			event.getServletContext().removeAttribute(MOBILE_SERVER_CONTEXT);
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

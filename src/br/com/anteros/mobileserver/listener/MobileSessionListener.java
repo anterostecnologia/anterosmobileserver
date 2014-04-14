@@ -27,7 +27,6 @@ import org.slf4j.LoggerFactory;
 
 import br.com.anteros.mobileserver.app.MobileServerContext;
 import br.com.anteros.mobileserver.app.MobileSession;
-import br.com.anteros.persistence.session.SQLSession;
 
 public class MobileSessionListener implements HttpSessionBindingListener, HttpSessionActivationListener,
 		HttpSessionAttributeListener, HttpSessionListener {
@@ -66,15 +65,15 @@ public class MobileSessionListener implements HttpSessionBindingListener, HttpSe
 	public void sessionDestroyed(HttpSessionEvent sessionEvent) {
 
 		MobileServerContext mobileServerContext = (MobileServerContext) sessionEvent.getSession().getServletContext()
-				.getAttribute("mobileServerContext");
+				.getAttribute(MobileContextListener.MOBILE_SERVER_CONTEXT);
 		MobileSession mSession = mobileServerContext.removeMobileSession(sessionEvent.getSession());
 		try {
 			mSession.getSQLSession().close();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		mSession = null;		 
+		
 		log.info("=> Sessão DESTRUÍDA " + sessionEvent.getSession().getId());
 
 	}

@@ -71,6 +71,7 @@ public class ConfigurationWindow extends Window implements ClickListener {
 		configurationForm.getFldAccessPassword().setValue(mobileServerContext.getAccessPassword());
 		configurationForm.getCbTipoPool().setValue(mobileServerContext.getConnectionPoolType());
 		configurationForm.getFldJNDI().setValue(mobileServerContext.getJndiName());
+		configurationForm.getFldQueryTimeout().setValue(mobileServerContext.getQueryTimeout());
 	}
 
 	private void savePreferences() {
@@ -86,7 +87,8 @@ public class ConfigurationWindow extends Window implements ClickListener {
 				configurationForm.getFldAccessUser().getValue() + "", configurationForm.getFldAccessPassword()
 						.getValue() + "", configurationForm.getCbTipoPool()
 						.getValue() + "", configurationForm.getFldJNDI()
-						.getValue() + "");
+						.getValue() + "",new Integer(configurationForm
+								.getFldQueryTimeout().getValue() + ""));
 	}
 
 	@Override
@@ -134,6 +136,12 @@ public class ConfigurationWindow extends Window implements ClickListener {
 						"<br/>Informe o tamanho para incrementar o pool de conexões do dicionário do servidor!",
 						Window.Notification.TYPE_WARNING_MESSAGE);
 				configurationForm.getFldAcquireIncrement().focus();
+			} else if ((configurationForm.getFldQueryTimeout().getValue() == null)
+					|| (StringUtils.isEmpty(configurationForm.getFldQueryTimeout().getValue() + ""))) {
+				app.getMainWindow().showNotification("Atenção",
+						"<br/>Informe 0 ou um valor para o tempo de espera na execução das Querys no servidor !",
+						Window.Notification.TYPE_WARNING_MESSAGE);
+				configurationForm.getFldQueryTimeout().focus();	
 			} else {
 				boolean configured = false;
 				try {

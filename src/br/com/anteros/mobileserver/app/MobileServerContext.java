@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
 import javax.servlet.http.HttpSession;
@@ -51,6 +50,7 @@ public class MobileServerContext {
 	private int initialPoolSize;
 	private int maxPoolSize;
 	private int minPoolSize;
+	private int queryTimeout;
 	private boolean showSql;
 	private boolean formatSql;
 	private String defaultSchema;
@@ -132,6 +132,7 @@ public class MobileServerContext {
 								(applicationSynchronism.getDefaultCatalog() == null ? "" : applicationSynchronism
 										.getDefaultCatalog()))
 						.addProperty(AnterosProperties.JDBC_SCHEMA, applicationSynchronism.getDefaultSchema())
+						.addProperty(AnterosProperties.QUERY_TIMEOUT,queryTimeout+"")
 						.buildSessionFactory();
 			} else
 				log.error("Ocorreu um erro inicializando pool de conexões da aplicação "
@@ -178,7 +179,9 @@ public class MobileServerContext {
 						.addProperty(AnterosProperties.SHOW_SQL, String.valueOf(showSql))
 						.addProperty(AnterosProperties.FORMAT_SQL, String.valueOf(formatSql))
 						.addProperty(AnterosProperties.JDBC_CATALOG, defaultCatalog)
-						.addProperty(AnterosProperties.JDBC_SCHEMA, defaultSchema).buildSessionFactory();
+						.addProperty(AnterosProperties.JDBC_SCHEMA, defaultSchema)
+						.addProperty(AnterosProperties.QUERY_TIMEOUT,queryTimeout+"")
+						.buildSessionFactory();
 			}
 		}
 		return sessionFactory;
@@ -205,12 +208,13 @@ public class MobileServerContext {
 		accessPassword = anterosPrefs.get("accessPassword", "1234789");
 		connectionPoolType = anterosPrefs.get("connectionPoolType", PoolDatasource.POOL_C3P0);
 		jndiName = anterosPrefs.get("jndiName", "");
+		queryTimeout = anterosPrefs.getInt("queryTimeout", 20);
 	}
 
 	public void writePreferences(String jdbcUrl, String user, String password, int acquireIncrement,
 			int initialPoolSize, int maxPoolSize, int minPoolSize, boolean showSql, String dialect, boolean formatSql,
 			String defaultSchema, String defaultCatalog, String accessUser, String accessPassword,
-			String connectionPoolType, String jndiName) {
+			String connectionPoolType, String jndiName, int queryTimeout) {
 		this.jdbcUrl = jdbcUrl;
 		this.user = user;
 		this.password = password;
@@ -227,6 +231,7 @@ public class MobileServerContext {
 		this.accessPassword = accessPassword;
 		this.connectionPoolType = connectionPoolType;
 		this.jndiName = jndiName;
+		this.queryTimeout = queryTimeout;
 
 		Preferences prefsRoot = Preferences.userRoot();
 		Preferences anterosPrefs = prefsRoot.node("anteros/mobile/server/preferences");
@@ -250,6 +255,7 @@ public class MobileServerContext {
 		anterosPrefs.putInt("initialPoolSize", this.initialPoolSize);
 		anterosPrefs.putInt("maxPoolSize", this.maxPoolSize);
 		anterosPrefs.putInt("minPoolSize", this.minPoolSize);
+		anterosPrefs.putInt("queryTimeout", this.queryTimeout);
 
 		anterosPrefs.putBoolean("showSql", this.showSql);
 		anterosPrefs.put("dialect", this.dialect);
@@ -437,6 +443,14 @@ public class MobileServerContext {
 
 	public void setConnectionPoolType(String connectionPoolType) {
 		this.connectionPoolType = connectionPoolType;
+	}
+
+	public int getQueryTimeout() {
+		return queryTimeout;
+	}
+
+	public void setQueryTimeout(int queryTimeout) {
+		this.queryTimeout = queryTimeout;
 	}
 
 }

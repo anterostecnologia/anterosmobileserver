@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Anteros-Server-Core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Anteros-Persistence"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/c3p0-0.9.1.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-beanutils-1.8.3.jar"/>
@@ -44,5 +43,6 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/validation-api-1.0.0.GA.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/vaadin-6.8.4.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/ojdbc6.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Anteros-MobileServer-Core"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

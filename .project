@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>Anteros-Server-App</name>
+	<name>Anteros-MobileServer</name>
 	<comment></comment>
 	<projects>
-		<project>Anteros-Server-Core</project>
 		<project>Anteros-Persistence</project>
+		<project>Anteros-MobileServer-Core</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
