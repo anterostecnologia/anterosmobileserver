@@ -404,14 +404,14 @@ public class MobileServerData {
 	public static MobileResponse executeActionSynchronism(MobileServerApplication application,
 			ActionSynchronism action, String[] params, Boolean executeCommit) throws Exception {
 		SynchronismManager synchronismManager = getMobileSession(application).getSynchronismManager();
-		SQLSession sqlSession = getSQLSession(application);
+		SQLSession sqlSession = synchronismManager.getSqlSession();
 
 		MobileRequest mr = new MobileRequest();
 
 		mr.setApplication(((ApplicationSynchronism) action.getObjectOwner()).getName());
 		mr.setClientId("ANTEROS_MOBILE_SERVER");
 		mr.setRequestMode(ACTION_EXECUTE_IMMEDIATE);
-		mr.setUserAgent("Anteros-Server-App");
+		mr.setUserAgent("Anteros-MobileServer");
 		MobileAction ma = new MobileAction();
 		ma.setName(action.getName());
 		ma.addParameter(params);

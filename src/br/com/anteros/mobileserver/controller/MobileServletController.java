@@ -13,6 +13,7 @@ import br.com.anteros.mobile.core.protocol.MobileResponse;
 import br.com.anteros.mobile.core.synchronism.engine.SynchronismManager;
 import br.com.anteros.mobile.core.synchronism.exception.ActionNotFoundException;
 import br.com.anteros.mobile.core.synchronism.exception.ApplicationNotFoundException;
+import br.com.anteros.mobile.core.synchronism.model.ApplicationSynchronism;
 import br.com.anteros.mobileserver.app.MobileServerContext;
 import br.com.anteros.mobileserver.app.MobileSession;
 import br.com.anteros.mobileserver.listener.MobileContextListener;
@@ -73,10 +74,13 @@ public class MobileServletController extends HttpConnectionServer {
 			/*
 			 * Obtém o SynchronismManager da sessão do usuário
 			 */
+			
+			
 
 			SynchronismManager synchronismManager = null;
 			try {
-				synchronismManager = mobileSession.getSynchronismManager();
+				ApplicationSynchronism app = mobileServerContext.getDictionaryManager().getApplicationByName(mobileRequest.getApplication(), mobileRequest.getClientId());
+				synchronismManager = mobileSession.getSynchronismManager(app);
 			} catch (Exception e) {
 				log.error("Ocorreu um erro obtendo o objeto de sincronismo." + e.getMessage() + " ##"
 						+ mobileRequest.getClientId());

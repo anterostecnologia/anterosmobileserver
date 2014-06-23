@@ -127,13 +127,14 @@ public class MobileServerContext {
 						.addProperty(AnterosProperties.DIALECT, dialectClass.getName())
 						.addProperty(AnterosProperties.SHOW_SQL, String.valueOf(showSql))
 						.addProperty(AnterosProperties.FORMAT_SQL, String.valueOf(formatSql))
-						.addProperty(
-								AnterosProperties.JDBC_CATALOG,
+						.addProperty(AnterosProperties.JDBC_CATALOG,
 								(applicationSynchronism.getDefaultCatalog() == null ? "" : applicationSynchronism
 										.getDefaultCatalog()))
 						.addProperty(AnterosProperties.JDBC_SCHEMA, applicationSynchronism.getDefaultSchema())
-						.addProperty(AnterosProperties.QUERY_TIMEOUT,queryTimeout+"")
+						.addProperty(AnterosProperties.QUERY_TIMEOUT, queryTimeout + "")
+						.addProperty(AnterosProperties.CONNECTION_CLIENTINFO, "Anteros-MobileServer, App " + applicationSynchronism.getName())
 						.buildSessionFactory();
+				sessionFactories.put(applicationSynchronism, sqlSessionFactory);
 			} else
 				log.error("Ocorreu um erro inicializando pool de conexões da aplicação "
 						+ applicationSynchronism.getName() + ". Verifique as configurações da aplicação.");
@@ -180,7 +181,8 @@ public class MobileServerContext {
 						.addProperty(AnterosProperties.FORMAT_SQL, String.valueOf(formatSql))
 						.addProperty(AnterosProperties.JDBC_CATALOG, defaultCatalog)
 						.addProperty(AnterosProperties.JDBC_SCHEMA, defaultSchema)
-						.addProperty(AnterosProperties.QUERY_TIMEOUT,queryTimeout+"")
+						.addProperty(AnterosProperties.QUERY_TIMEOUT, queryTimeout + "")
+						.addProperty(AnterosProperties.CONNECTION_CLIENTINFO, "Anteros-MobileServer")
 						.buildSessionFactory();
 			}
 		}
@@ -290,7 +292,7 @@ public class MobileServerContext {
 
 	public DictionaryManager getDictionaryManager() throws Exception {
 		if (dictionaryManager.getSqlSession() == null)
-			dictionaryManager.setSqlSession(buildSessionFactory(false).getNewSession());
+			dictionaryManager.setSqlSession(buildSessionFactory(false).getSession());
 		return dictionaryManager;
 	}
 
