@@ -308,8 +308,8 @@ public class MobileServerData {
 
 	private static SQLSession getSQLSession(Application application) throws Exception {
 		MobileSession mobileSession = getMobileSession(application);
-		SQLSession sqlSession = mobileSession.getSQLSession();
-		mobileSession.getSQLSession().setClientId("ANTEROS_MOBILE_SERVER");
+		SQLSession sqlSession = mobileSession.getSynchronismManager().getSqlSession();
+		sqlSession.setClientId("ANTEROS_MOBILE_SERVER");
 		return sqlSession;
 	}
 
