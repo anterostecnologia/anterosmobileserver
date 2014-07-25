@@ -98,12 +98,12 @@ public class MobileServletController extends HttpConnectionServer {
 					log.info(new StringBuffer().append(session.getId())
 							.append(" Fim requisição - Executou -> C O M M I T").append(" ##")
 							.append(mobileRequest.getClientId()).toString());
-					synchronismManager.getSqlSession().commit();
+					synchronismManager.getSqlSession().getTransaction().commit();
 				} else {
 					log.info(new StringBuffer().append("  ").append(session.getId())
 							.append(" Fim requisição - Executou -> R O L L B A C K").append(" ##")
 							.append(mobileRequest.getClientId()).toString());
-					synchronismManager.getSqlSession().rollback();
+					synchronismManager.getSqlSession().getTransaction().rollback();
 				}
 
 			} catch (ApplicationNotFoundException ex) {
@@ -112,7 +112,7 @@ public class MobileServletController extends HttpConnectionServer {
 								.append(" ##").append(mobileRequest.getClientId()).toString(), ex);
 				mobileResponse.setStatus(ex.getMessage());
 				try {
-					synchronismManager.getSqlSession().rollback();
+					synchronismManager.getSqlSession().getTransaction().rollback();
 				} catch (Exception e) {
 				}
 				log.info(new StringBuffer().append(" ").append(session.getId())
@@ -124,7 +124,7 @@ public class MobileServletController extends HttpConnectionServer {
 								.append(" ##").append(mobileRequest.getClientId()).toString(), ex);
 				mobileResponse.setStatus(ex.getMessage());
 				try {
-					synchronismManager.getSqlSession().rollback();
+					synchronismManager.getSqlSession().getTransaction().rollback();
 				} catch (Exception e) {
 				}
 				log.info(new StringBuffer().append(" ").append(session.getId())
@@ -137,7 +137,7 @@ public class MobileServletController extends HttpConnectionServer {
 				mobileResponse.setStatus(new StringBuffer(" Erro executando Requisição - Exceção: ").append(
 						ex.getMessage()).toString());
 				try {
-					synchronismManager.getSqlSession().rollback();
+					synchronismManager.getSqlSession().getTransaction().rollback();
 				} catch (Exception e) {
 				}
 				log.info(new StringBuffer().append(" ").append(session.getId())

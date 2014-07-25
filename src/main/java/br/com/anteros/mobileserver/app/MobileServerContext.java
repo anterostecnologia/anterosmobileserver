@@ -292,7 +292,7 @@ public class MobileServerContext {
 
 	public DictionaryManager getDictionaryManager() throws Exception {
 		if (dictionaryManager.getSqlSession() == null)
-			dictionaryManager.setSqlSession(buildSessionFactory(false).getSession());
+			dictionaryManager.setSqlSession(buildSessionFactory(false).getCurrentSession());
 		return dictionaryManager;
 	}
 

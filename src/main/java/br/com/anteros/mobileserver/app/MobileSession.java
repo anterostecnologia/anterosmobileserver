@@ -32,7 +32,7 @@ public class MobileSession {
 		SynchronismManager synchronismManager = sessionsByApplications.get(applicationSynchronism);
 		if (synchronismManager == null) {
 			SQLSessionFactory sqlSessionFactory = context.buildSessionFactory(applicationSynchronism, false);
-			synchronismManager = new SynchronismManager(sqlSessionFactory.getSession(),
+			synchronismManager = new SynchronismManager(sqlSessionFactory.getCurrentSession(),
 					context.getDictionaryManager(), sqlSessionFactory);
 			sessionsByApplications.put(applicationSynchronism, synchronismManager);
 		}
@@ -42,7 +42,7 @@ public class MobileSession {
 	public SynchronismManager getSynchronismManager() throws Exception {
 		if (synchronismManager == null) {
 			SQLSessionFactory sf = context.buildSessionFactory(false);
-			SQLSession session = sf.getSession();
+			SQLSession session = sf.getCurrentSession();
 			httpSession.setAttribute(MobileContextListener.SQL_SESSION, session);
 			synchronismManager = new SynchronismManager(session, context.getDictionaryManager(),
 					context.buildSessionFactory(false));

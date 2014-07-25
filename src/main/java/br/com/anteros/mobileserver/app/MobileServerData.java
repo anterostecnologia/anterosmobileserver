@@ -328,7 +328,8 @@ public class MobileServerData {
 			mobileSession.clearSessions();
 			return true;
 		} catch (Exception e) {
-			application.getMainWindow().showNotification("Ocorreu um erro configurando a Sessão. " + e.getCause().getMessage(),
+			application.getMainWindow().showNotification(
+					"Ocorreu um erro configurando a Sessão. " + e.getCause().getMessage(),
 					Window.Notification.TYPE_ERROR_MESSAGE);
 			e.printStackTrace();
 		}
@@ -420,14 +421,14 @@ public class MobileServerData {
 		try {
 			result = synchronismManager.executeRequest(mr);
 			if (executeCommit)
-				sqlSession.commit();
+				sqlSession.getTransaction().commit();
 			else
-				sqlSession.rollback();
+				sqlSession.getTransaction().rollback();
 		} catch (ApplicationNotFoundException e) {
 			new UserMessages(application.getMainWindow()).error(e);
 			result.setStatus(e.getMessage());
 			try {
-				sqlSession.rollback();
+				sqlSession.getTransaction().rollback();
 			} catch (Exception ex) {
 
 			}
@@ -435,7 +436,7 @@ public class MobileServerData {
 			new UserMessages(application.getMainWindow()).error(e);
 			result.setStatus(e.getMessage());
 			try {
-				sqlSession.rollback();
+				sqlSession.getTransaction().rollback();
 			} catch (Exception ex) {
 
 			}
@@ -443,7 +444,7 @@ public class MobileServerData {
 			new UserMessages(application.getMainWindow()).error(e);
 			result.setStatus(e.getMessage());
 			try {
-				sqlSession.rollback();
+				sqlSession.getTransaction().rollback();
 			} catch (Exception ex) {
 
 			}
@@ -455,12 +456,12 @@ public class MobileServerData {
 		SQLSession sqlSession = getSQLSession(application);
 		try {
 			sqlSession.save(synchronism);
-			sqlSession.commit();
+			sqlSession.getTransaction().commit();
 			return true;
 		} catch (Exception e) {
 			try {
 				e.printStackTrace();
-				sqlSession.rollback();
+				sqlSession.getTransaction().rollback();
 			} catch (Exception e1) {
 			}
 			new UserMessages(application.getMainWindow()).error(e.getMessage());
@@ -474,10 +475,10 @@ public class MobileServerData {
 			sqlSession = getSQLSession(application);
 			try {
 				sqlSession.remove(synchronism);
-				sqlSession.commit();
+				sqlSession.getTransaction().commit();
 				return true;
 			} catch (Exception e) {
-				sqlSession.rollback();
+				sqlSession.getTransaction().rollback();
 				new UserMessages(application.getMainWindow()).error(e.getMessage());
 			}
 		} catch (Exception e1) {
@@ -497,7 +498,7 @@ public class MobileServerData {
 			return newObject;
 		} catch (Exception e) {
 			try {
-				sqlSession.rollback();
+				sqlSession.getTransaction().rollback();
 			} catch (Exception e1) {
 			}
 			new UserMessages(application.getMainWindow()).error(e.getMessage());
