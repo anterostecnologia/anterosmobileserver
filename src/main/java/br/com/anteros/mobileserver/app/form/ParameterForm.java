@@ -17,6 +17,7 @@ package br.com.anteros.mobileserver.app.form;
 
 import java.util.Iterator;
 
+import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobile.core.synchronism.model.ParameterSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.Synchronism;
 import br.com.anteros.mobile.core.synchronism.model.TableSynchronism;
@@ -24,7 +25,6 @@ import br.com.anteros.mobileserver.app.MobileServerApplication;
 import br.com.anteros.mobileserver.app.MobileServerData;
 import br.com.anteros.mobileserver.util.FieldTypes;
 import br.com.anteros.mobileserver.util.UserMessages;
-import br.com.anteros.persistence.util.StringUtils;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;

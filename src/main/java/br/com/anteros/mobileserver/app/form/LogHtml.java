@@ -18,7 +18,7 @@ package br.com.anteros.mobileserver.app.form;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.com.anteros.persistence.util.StringUtils;
+import br.com.anteros.core.utils.StringUtils;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.core.CoreConstants;
 import ch.qos.logback.core.util.CachingDateFormatter;

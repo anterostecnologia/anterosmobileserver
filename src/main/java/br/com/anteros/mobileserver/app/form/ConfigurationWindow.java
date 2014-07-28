@@ -15,10 +15,10 @@
  ******************************************************************************/
 package br.com.anteros.mobileserver.app.form;
 
+import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobileserver.app.MobileServerApplication;
 import br.com.anteros.mobileserver.app.MobileServerContext;
 import br.com.anteros.mobileserver.app.MobileServerData;
-import br.com.anteros.persistence.util.StringUtils;
 
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;

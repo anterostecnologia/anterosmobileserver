@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobile.core.synchronism.engine.DictionaryManager;
 import br.com.anteros.mobile.core.synchronism.model.ActionSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.ApplicationSynchronism;
@@ -24,14 +25,13 @@ import br.com.anteros.mobile.core.synchronism.model.Synchronism;
 import br.com.anteros.mobile.core.synchronism.model.TableSynchronism;
 import br.com.anteros.mobileserver.controller.PoolDatasource;
 import br.com.anteros.persistence.session.SQLSessionFactory;
-import br.com.anteros.persistence.session.configuration.AnterosConfiguration;
-import br.com.anteros.persistence.session.configuration.AnterosProperties;
+import br.com.anteros.persistence.session.configuration.AnterosPersistenceConfiguration;
+import br.com.anteros.persistence.session.configuration.AnterosPersistenceProperties;
 import br.com.anteros.persistence.sql.dialect.FirebirdDialect;
 import br.com.anteros.persistence.sql.dialect.H2Dialect;
 import br.com.anteros.persistence.sql.dialect.MySQLDialect;
 import br.com.anteros.persistence.sql.dialect.OracleDialect;
 import br.com.anteros.persistence.sql.dialect.PostgreSqlDialect;
-import br.com.anteros.persistence.util.StringUtils;
 
 public class MobileServerContext {
 
@@ -123,16 +123,18 @@ public class MobileServerContext {
 				else if (MobileServerContext.POSTGRESQL.equals(applicationSynchronism.getDialect()))
 					dialectClass = PostgreSqlDialect.class;
 
-				sqlSessionFactory = new AnterosConfiguration(dataSource)
-						.addProperty(AnterosProperties.DIALECT, dialectClass.getName())
-						.addProperty(AnterosProperties.SHOW_SQL, String.valueOf(showSql))
-						.addProperty(AnterosProperties.FORMAT_SQL, String.valueOf(formatSql))
-						.addProperty(AnterosProperties.JDBC_CATALOG,
+				sqlSessionFactory = new AnterosPersistenceConfiguration(dataSource)
+						.addProperty(AnterosPersistenceProperties.DIALECT, dialectClass.getName())
+						.addProperty(AnterosPersistenceProperties.SHOW_SQL, String.valueOf(showSql))
+						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, String.valueOf(formatSql))
+						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG,
 								(applicationSynchronism.getDefaultCatalog() == null ? "" : applicationSynchronism
 										.getDefaultCatalog()))
-						.addProperty(AnterosProperties.JDBC_SCHEMA, applicationSynchronism.getDefaultSchema())
-						.addProperty(AnterosProperties.QUERY_TIMEOUT, queryTimeout + "")
-						.addProperty(AnterosProperties.CONNECTION_CLIENTINFO, applicationSynchronism.getName())
+						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA,
+								applicationSynchronism.getDefaultSchema())
+						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
+						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO,
+								applicationSynchronism.getName())
 						.buildSessionFactory();
 				sessionFactories.put(applicationSynchronism, sqlSessionFactory);
 			} else
@@ -172,17 +174,17 @@ public class MobileServerContext {
 				else if (MobileServerContext.POSTGRESQL.equals(dialect))
 					dialectClass = PostgreSqlDialect.class;
 
-				sessionFactory = new AnterosConfiguration(dataSource).addAnnotatedClass(Synchronism.class)
+				sessionFactory = new AnterosPersistenceConfiguration(dataSource).addAnnotatedClass(Synchronism.class)
 						.addAnnotatedClass(ActionSynchronism.class).addAnnotatedClass(ApplicationSynchronism.class)
 						.addAnnotatedClass(FieldSynchronism.class).addAnnotatedClass(ParameterSynchronism.class)
 						.addAnnotatedClass(ProcedureSynchronism.class).addAnnotatedClass(TableSynchronism.class)
-						.addProperty(AnterosProperties.DIALECT, dialectClass.getName())
-						.addProperty(AnterosProperties.SHOW_SQL, String.valueOf(showSql))
-						.addProperty(AnterosProperties.FORMAT_SQL, String.valueOf(formatSql))
-						.addProperty(AnterosProperties.JDBC_CATALOG, defaultCatalog)
-						.addProperty(AnterosProperties.JDBC_SCHEMA, defaultSchema)
-						.addProperty(AnterosProperties.QUERY_TIMEOUT, queryTimeout + "")
-						.addProperty(AnterosProperties.CONNECTION_CLIENTINFO, "Anteros-MobileServer")
+						.addProperty(AnterosPersistenceProperties.DIALECT, dialectClass.getName())
+						.addProperty(AnterosPersistenceProperties.SHOW_SQL, String.valueOf(showSql))
+						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, String.valueOf(formatSql))
+						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG, defaultCatalog)
+						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA, defaultSchema)
+						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
+						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, "Anteros-MobileServer")
 						.buildSessionFactory();
 			}
 		}

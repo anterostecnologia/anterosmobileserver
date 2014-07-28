@@ -5,9 +5,9 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import br.com.anteros.core.utils.ReflectionUtils;
 import br.com.anteros.persistence.sql.datasource.JDBCDataSource;
 import br.com.anteros.persistence.sql.datasource.JNDIDataSourceFactory;
-import br.com.anteros.persistence.util.ReflectionUtils;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 

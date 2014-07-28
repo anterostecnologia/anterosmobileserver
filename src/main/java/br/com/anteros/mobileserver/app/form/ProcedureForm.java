@@ -21,6 +21,7 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Random;
 
+import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobile.core.synchronism.model.ParameterSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.ProcedureSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.Synchronism;
@@ -31,7 +32,6 @@ import br.com.anteros.mobileserver.util.UserMessages;
 import br.com.anteros.persistence.schema.definition.StoredParameterSchema;
 import br.com.anteros.persistence.schema.definition.StoredProcedureSchema;
 import br.com.anteros.persistence.schema.definition.type.StoredParameterType;
-import br.com.anteros.persistence.util.StringUtils;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;

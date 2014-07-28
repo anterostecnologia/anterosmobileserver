@@ -19,6 +19,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
+import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobile.core.synchronism.model.FieldSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.ParameterSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.Synchronism;
@@ -27,7 +28,6 @@ import br.com.anteros.mobileserver.app.MobileServerApplication;
 import br.com.anteros.mobileserver.app.MobileServerData;
 import br.com.anteros.mobileserver.util.FieldTypes;
 import br.com.anteros.mobileserver.util.UserMessages;
-import br.com.anteros.persistence.util.StringUtils;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;

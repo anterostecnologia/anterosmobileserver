@@ -15,6 +15,7 @@
  ******************************************************************************/
 package br.com.anteros.mobileserver.app.form;
 
+import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobile.core.synchronism.model.ApplicationSynchronism;
 import br.com.anteros.mobileserver.app.MobileServerApplication;
 import br.com.anteros.mobileserver.app.MobileServerContext;
@@ -26,7 +27,6 @@ import br.com.anteros.persistence.sql.dialect.H2Dialect;
 import br.com.anteros.persistence.sql.dialect.MySQLDialect;
 import br.com.anteros.persistence.sql.dialect.OracleDialect;
 import br.com.anteros.persistence.sql.dialect.PostgreSqlDialect;
-import br.com.anteros.persistence.util.StringUtils;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.HierarchicalContainer;
