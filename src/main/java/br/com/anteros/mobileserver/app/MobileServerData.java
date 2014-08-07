@@ -38,6 +38,7 @@ import br.com.anteros.persistence.schema.definition.StoredFunctionSchema;
 import br.com.anteros.persistence.schema.definition.StoredParameterSchema;
 import br.com.anteros.persistence.schema.definition.StoredProcedureSchema;
 import br.com.anteros.persistence.session.SQLSession;
+import br.com.anteros.persistence.transaction.Transaction;
 
 import com.vaadin.Application;
 import com.vaadin.data.Item;
@@ -122,8 +123,11 @@ public class MobileServerData {
 		List<ActionSynchronism> actions = null;
 
 		ApplicationSynchronism app = (ApplicationSynchronism) itemToLoad.getItemProperty(PROPERTY_DATA).getValue();
+		Transaction transaction = null;
 		try {
 			SQLSession sqlSession = getSQLSession(application);
+			transaction = sqlSession.getTransaction();
+			transaction.begin();
 			actions = (List<ActionSynchronism>) sqlSession.selectList(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'ACAO' AND ID_OBJETO_PAI = '" + app.getId()
 							+ "' ORDER BY NOME_OBJETO", ActionSynchronism.class);
@@ -132,6 +136,12 @@ public class MobileServerData {
 					"Ocorreu um erro lendo as Ações " + e.getMessage() + " da aplicação " + app.getName(),
 					Window.Notification.TYPE_ERROR_MESSAGE);
 			e.printStackTrace();
+		}finally{
+			try {
+				transaction.rollback();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		if (actions != null) {
@@ -154,8 +164,11 @@ public class MobileServerData {
 		List<Synchronism> tablesAndProcedures = null;
 
 		ActionSynchronism action = (ActionSynchronism) itemToLoad.getItemProperty(PROPERTY_DATA).getValue();
+		Transaction transaction = null;
 		try {
 			SQLSession sqlSession = getSQLSession(application);
+			transaction = sqlSession.getTransaction();
+			transaction.begin();
 			tablesAndProcedures = (List<Synchronism>) sqlSession.selectList(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO IN('TABELA','PROCEDIMENTO') AND ID_OBJETO_PAI = '"
 							+ action.getId() + "' ORDER BY NOME_OBJETO", Synchronism.class);
@@ -165,6 +178,12 @@ public class MobileServerData {
 							"Ocorreu um erro lendo as Tabelas/Procedimentos " + e.getMessage() + " da Ação "
 									+ action.getName(), Window.Notification.TYPE_ERROR_MESSAGE);
 			e.printStackTrace();
+		}finally{
+			try {
+				transaction.rollback();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 
 		HierarchicalContainer hwContainer = (HierarchicalContainer) application.getTree().getContainerDataSource();

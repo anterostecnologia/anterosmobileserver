@@ -26,6 +26,7 @@ import br.com.anteros.mobileserver.app.form.ParameterForm;
 import br.com.anteros.mobileserver.app.form.ProcedureForm;
 import br.com.anteros.mobileserver.app.form.TableForm;
 import br.com.anteros.mobileserver.util.UserMessages;
+import br.com.anteros.persistence.transaction.Transaction;
 
 import com.vaadin.Application;
 import com.vaadin.data.Item;
@@ -146,9 +147,22 @@ public class MobileServerApplication extends Application implements ValueChangeL
 
 	private Button btnDuplicateAction;
 
-	
 	public void init() {
-		buildMainLayout();
+		Transaction transaction = null;
+		try {
+			transaction = MobileServerData.getMobileSession(this).getSynchronismManager().getSqlSession()
+					.getTransaction();
+			transaction.begin();
+			buildMainLayout();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		} finally {
+			try {
+				transaction.rollback();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	private void buildMainLayout() {
@@ -636,7 +650,6 @@ public class MobileServerApplication extends Application implements ValueChangeL
 		horizontalDataLayout.setSecondComponent(c);
 	}
 
-	
 	public void valueChange(ValueChangeEvent event) {
 
 	}
@@ -645,7 +658,6 @@ public class MobileServerApplication extends Application implements ValueChangeL
 
 	private ExpandListener expandListener = new ExpandListener() {
 
-		
 		public void nodeExpand(ExpandEvent event) {
 			Item itemToLoad = app.getTree().getItem(event.getItemId());
 			refreshTreeItem(itemToLoad, itemToLoad.getItemProperty(MobileServerData.PROPERTY_DATA).getValue());
@@ -667,7 +679,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 	}
 
 	private ValueChangeListener valueChangeListener = new ValueChangeListener() {
-		
+
 		public void valueChange(ValueChangeEvent event) {
 			Item item = tree.getItem(event.getProperty().getValue());
 			if (item != null) {
@@ -864,7 +876,6 @@ public class MobileServerApplication extends Application implements ValueChangeL
 
 	private ClickListener clickListener = new ClickListener() {
 
-		
 		public void buttonClick(ClickEvent event) {
 			if (event.getComponent() == btnAddApplication)
 				addApplication();
@@ -926,7 +937,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 	private void reloadServer() {
 		final UserMessages userMessages = new UserMessages(app.getMainWindow());
 		userMessages.confirm("Recarregar o dicionário do Servidor ?", new ClickListener() {
-			
+
 			public void buttonClick(ClickEvent event) {
 				userMessages.removeConfirm();
 				if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK)) {
@@ -957,7 +968,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 			if (selectObject instanceof ProcedureSynchronism) {
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Remover o procedimento " + selectObject.getName() + " ?", new ClickListener() {
-					
+
 					public void buttonClick(ClickEvent event) {
 						userMessages.removeConfirm();
 						if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK))
@@ -994,7 +1005,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Remover o parâmetro " + ((Synchronism) selectObject).getName() + " ?",
 						new ClickListener() {
-							
+
 							public void buttonClick(ClickEvent event) {
 								userMessages.removeConfirm();
 								if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK))
@@ -1036,7 +1047,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Remover o campo " + ((Synchronism) selectObject).getName() + " ?",
 						new ClickListener() {
-							
+
 							public void buttonClick(ClickEvent event) {
 								userMessages.removeConfirm();
 								if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK))
@@ -1074,7 +1085,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Remover a tabela " + ((Synchronism) selectObject).getName() + " ?",
 						new ClickListener() {
-							
+
 							public void buttonClick(ClickEvent event) {
 								userMessages.removeConfirm();
 								if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK))
@@ -1128,7 +1139,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Remover a ação " + ((Synchronism) selectObject).getName() + " ?",
 						new ClickListener() {
-							
+
 							public void buttonClick(ClickEvent event) {
 								userMessages.removeConfirm();
 								if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK))
@@ -1168,7 +1179,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Remover a Aplicação " + ((Synchronism) selectObject).getName() + " ?",
 						new ClickListener() {
-							
+
 							public void buttonClick(ClickEvent event) {
 								userMessages.removeConfirm();
 								if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK))

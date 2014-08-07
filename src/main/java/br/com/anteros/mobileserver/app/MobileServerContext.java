@@ -125,8 +125,8 @@ public class MobileServerContext {
 
 				sqlSessionFactory = new AnterosPersistenceConfiguration(dataSource)
 						.addProperty(AnterosPersistenceProperties.DIALECT, dialectClass.getName())
-						.addProperty(AnterosPersistenceProperties.SHOW_SQL, String.valueOf(showSql))
-						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, String.valueOf(formatSql))
+						.addProperty(AnterosPersistenceProperties.SHOW_SQL, "true")//String.valueOf(showSql))
+						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, "true")//String.valueOf(formatSql))
 						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG,
 								(applicationSynchronism.getDefaultCatalog() == null ? "" : applicationSynchronism
 										.getDefaultCatalog()))
@@ -179,8 +179,8 @@ public class MobileServerContext {
 						.addAnnotatedClass(FieldSynchronism.class).addAnnotatedClass(ParameterSynchronism.class)
 						.addAnnotatedClass(ProcedureSynchronism.class).addAnnotatedClass(TableSynchronism.class)
 						.addProperty(AnterosPersistenceProperties.DIALECT, dialectClass.getName())
-						.addProperty(AnterosPersistenceProperties.SHOW_SQL, String.valueOf(showSql))
-						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, String.valueOf(formatSql))
+						.addProperty(AnterosPersistenceProperties.SHOW_SQL, "true")//String.valueOf(showSql))
+						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, "true")//String.valueOf(formatSql))
 						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG, defaultCatalog)
 						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA, defaultSchema)
 						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
