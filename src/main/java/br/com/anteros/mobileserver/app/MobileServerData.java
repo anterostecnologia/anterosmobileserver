@@ -89,9 +89,9 @@ public class MobileServerData {
 		try {
 			SQLSession sqlSession = getSQLSession(application);
 			List<ApplicationSynchronism> applications = null;
-			applications = (List<ApplicationSynchronism>) sqlSession.selectList(
+			applications = (List<ApplicationSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'APLICACAO' ORDER BY NOME_OBJETO",
-					ApplicationSynchronism.class);
+					ApplicationSynchronism.class).getResultList();
 			hwContainer = new HierarchicalContainer();
 
 			hwContainer.addContainerProperty(PROPERTY_NAME, String.class, null);
@@ -128,9 +128,9 @@ public class MobileServerData {
 			SQLSession sqlSession = getSQLSession(application);
 			transaction = sqlSession.getTransaction();
 			transaction.begin();
-			actions = (List<ActionSynchronism>) sqlSession.selectList(
+			actions = (List<ActionSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'ACAO' AND ID_OBJETO_PAI = '" + app.getId()
-							+ "' ORDER BY NOME_OBJETO", ActionSynchronism.class);
+							+ "' ORDER BY NOME_OBJETO", ActionSynchronism.class).getResultList();
 		} catch (Exception e) {
 			application.getMainWindow().showNotification(
 					"Ocorreu um erro lendo as Ações " + e.getMessage() + " da aplicação " + app.getName(),
@@ -169,9 +169,9 @@ public class MobileServerData {
 			SQLSession sqlSession = getSQLSession(application);
 			transaction = sqlSession.getTransaction();
 			transaction.begin();
-			tablesAndProcedures = (List<Synchronism>) sqlSession.selectList(
+			tablesAndProcedures = (List<Synchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO IN('TABELA','PROCEDIMENTO') AND ID_OBJETO_PAI = '"
-							+ action.getId() + "' ORDER BY NOME_OBJETO", Synchronism.class);
+							+ action.getId() + "' ORDER BY NOME_OBJETO", Synchronism.class).getResultList();
 		} catch (Exception e) {
 			application.getMainWindow()
 					.showNotification(
@@ -215,9 +215,9 @@ public class MobileServerData {
 		TableSynchronism table = (TableSynchronism) itemToLoad.getItemProperty(PROPERTY_DATA).getValue();
 		try {
 			SQLSession sqlSession = getSQLSession(application);
-			fields = (List<FieldSynchronism>) sqlSession.selectList(
+			fields = (List<FieldSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'CAMPO' AND ID_OBJETO_PAI = '" + table.getId()
-							+ "' ORDER BY NOME_OBJETO", FieldSynchronism.class);
+							+ "' ORDER BY NOME_OBJETO", FieldSynchronism.class).getResultList();
 		} catch (Exception e) {
 			application.getMainWindow().showNotification(
 					"Ocorreu um erro lendo os Campos " + e.getMessage() + " da Tabela " + table.getName(),
@@ -255,9 +255,9 @@ public class MobileServerData {
 		TableSynchronism table = (TableSynchronism) itemToLoad.getItemProperty(PROPERTY_DATA).getValue();
 		try {
 			SQLSession sqlSession = getSQLSession(application);
-			parameters = (List<ParameterSynchronism>) sqlSession.selectList(
+			parameters = (List<ParameterSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'PARAMETRO' AND ID_OBJETO_PAI = '" + table.getId()
-							+ "' ORDER BY NOME_OBJETO", ParameterSynchronism.class);
+							+ "' ORDER BY NOME_OBJETO", ParameterSynchronism.class).getResultList();
 		} catch (Exception e) {
 			application.getMainWindow().showNotification(
 					"Ocorreu um erro lendo os Parâmetros " + e.getMessage() + " da Tabela " + table.getName(),
@@ -294,9 +294,9 @@ public class MobileServerData {
 		ProcedureSynchronism procedure = (ProcedureSynchronism) itemToLoad.getItemProperty(PROPERTY_DATA).getValue();
 		try {
 			SQLSession sqlSession = getSQLSession(application);
-			parameters = (List<ParameterSynchronism>) sqlSession.selectList(
+			parameters = (List<ParameterSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'PARAMETRO' AND ID_OBJETO_PAI = '"
-							+ procedure.getId() + "' ORDER BY SEQUENCE_PARAMETER", ParameterSynchronism.class);
+							+ procedure.getId() + "' ORDER BY SEQUENCE_PARAMETER", ParameterSynchronism.class).getResultList();
 		} catch (Exception e) {
 			application.getMainWindow().showNotification(
 					"Ocorreu um erro lendo os Parâmetros " + e.getMessage() + " da Procedure " + procedure.getName(),
@@ -512,7 +512,7 @@ public class MobileServerData {
 		Synchronism synchronism = (Synchronism) item.getItemProperty(MobileServerData.PROPERTY_DATA).getValue();
 		SQLSession sqlSession = getSQLSession(application);
 		try {
-			Synchronism newObject = (Synchronism) sqlSession.selectId(sqlSession.getIdentifier(synchronism));
+			Synchronism newObject = (Synchronism) sqlSession.find(sqlSession.getIdentifier(synchronism));
 			item.getItemProperty(MobileServerData.PROPERTY_DATA).setValue(newObject);
 			return newObject;
 		} catch (Exception e) {
