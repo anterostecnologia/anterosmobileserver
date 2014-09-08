@@ -16,6 +16,7 @@
 package br.com.anteros.mobileserver.app.form;
 
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,7 +27,6 @@ import br.com.anteros.mobile.core.synchronism.model.ParameterSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.ProcedureSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.Synchronism;
 import br.com.anteros.mobile.core.synchronism.model.TableSynchronism;
-import br.com.anteros.mobile.core.util.ConvertTypes;
 import br.com.anteros.mobileserver.app.MobileServerApplication;
 import br.com.anteros.mobileserver.app.MobileServerData;
 import br.com.anteros.mobileserver.util.FieldTypes;
@@ -266,7 +266,7 @@ public class ExecuteForm extends VerticalLayout implements ValueChangeListener {
 			if (comp instanceof TextField) {
 				result.add(((TextField) comp).getValue() + "");
 			} else if (comp instanceof PopupDateField) {
-				result.add(ConvertTypes.dateFormat.format(((PopupDateField) comp).getValue()));
+				result.add(new SimpleDateFormat("yyyy-MM-dd").format(((PopupDateField) comp).getValue()));
 			}
 		}
 		return result.toArray(new String[] {});

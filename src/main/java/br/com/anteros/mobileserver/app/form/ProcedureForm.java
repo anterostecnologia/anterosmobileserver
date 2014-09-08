@@ -216,7 +216,7 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 				"Tipo Dado Parâmetro", "Tipo de Parâmetro", "" });
 		gridParameters.setSizeFull();
 		gridParameters.addListener(new Property.ValueChangeListener() {
-			
+
 			public void valueChange(ValueChangeEvent event) {
 				enableActions();
 			}
@@ -266,7 +266,6 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 		return result;
 	}
 
-	
 	public void valueChange(ValueChangeEvent event) {
 		Property prop = fldName.getContainerProperty(event.getProperty().toString(), MobileServerData.PROPERTY_DATA);
 		loadParametersOut(prop);
@@ -311,7 +310,6 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 		btnMoveDown.setEnabled(gridParameters.getValue() != null);
 	}
 
-	
 	public void buttonClick(ClickEvent event) {
 		if (event.getSource() == btnImport)
 			importParameters();
@@ -342,7 +340,7 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 					final UserMessages userMessages = new UserMessages(app.getMainWindow());
 					userMessages.confirm("Importar o(s) parâmetro(s) do procedimento " + procedure.getName() + " ?",
 							new ClickListener() {
-								
+
 								public void buttonClick(ClickEvent event) {
 									userMessages.removeConfirm();
 									if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK)) {
@@ -356,11 +354,15 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 											for (StoredParameterSchema param : procedure.getParameters()) {
 												currentParam = param;
 												ParameterSynchronism parameterSynchronism = new ParameterSynchronism();
-												parameterSynchronism.setId(Math.abs(randomGenerator.nextLong()) * -1);
+												long newId = randomGenerator.nextLong();
+												if (newId>0)
+													newId = newId *-1;
+												parameterSynchronism.setId(newId);
 												parameterSynchronism.setName(param.getName());
 												parameterSynchronism.setObjectOwner(procedureSynchronism);
 												parameterSynchronism.setDescription(param.getName());
-												if (StoredParameterType.IN.equals(param.getType()))
+												if ((param.getParameterType() != null)
+														&& (StoredParameterType.IN.equals(param.getParameterType())))
 													parameterSynchronism.setParameterType(ParameterSynchronism.INPUT);
 												else
 													parameterSynchronism.setParameterType(ParameterSynchronism.OUTPUT);
@@ -374,10 +376,16 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 												sequence++;
 											}
 										} catch (Exception e) {
-											getWindow().showNotification(
-													"Atenção",
-													"Ocorreu um erro importando " + currentParam.toString() + " "
-															+ e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+											if (currentParam != null) {
+												getWindow().showNotification(
+														"Atenção",
+														"Ocorreu um erro importando " + currentParam.toString() + " "
+																+ e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
+											} else {
+												getWindow().showNotification("Atenção",
+														"Ocorreu um erro importando parâmetros. " + e.getMessage(),
+														Notification.TYPE_ERROR_MESSAGE);
+											}
 										}
 										enableActions();
 									}
@@ -414,7 +422,7 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 			final UserMessages userMessages = new UserMessages(app.getMainWindow());
 			final Form f = procedureForm;
 			userMessages.confirm("Gravar os dados?", new ClickListener() {
-				
+
 				public void buttonClick(ClickEvent event) {
 					userMessages.removeConfirm();
 					if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK)) {
@@ -446,7 +454,7 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 		if (this.getParent() instanceof TabSheet) {
 			final UserMessages userMessages = new UserMessages(app.getMainWindow());
 			userMessages.confirm("Cancelar a Edição do Procedimento?", new ClickListener() {
-				
+
 				public void buttonClick(ClickEvent event) {
 					userMessages.removeConfirm();
 					refreshAndClose(comp);
@@ -461,7 +469,7 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 			final ParameterWindow parameterWindow = new ParameterWindow(app, selectedParameter, procedureSynchronism);
 			getWindow().addWindow(parameterWindow);
 			parameterWindow.addListener(new CloseListener() {
-				
+
 				public void windowClose(CloseEvent e) {
 					if (parameterWindow.getFormParameter().getLastAction() == UserMessages.USER_CONFIRM_OK) {
 						Item item = gridParameters.getItem(selectedParameter.getId());
@@ -490,7 +498,7 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 		if (selectedParameter != null) {
 			final UserMessages userMessages = new UserMessages(app.getMainWindow());
 			userMessages.confirm("Remover o parâmetro " + selectedParameter.getName() + " ?", new ClickListener() {
-				
+
 				public void buttonClick(ClickEvent event) {
 					userMessages.removeConfirm();
 					if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK)) {
@@ -515,7 +523,7 @@ public class ProcedureForm extends VerticalLayout implements ValueChangeListener
 		final ParameterWindow parameterWindow = new ParameterWindow(app, parameter, procedureSynchronism);
 		getWindow().addWindow(parameterWindow);
 		parameterWindow.addListener(new CloseListener() {
-			
+
 			public void windowClose(CloseEvent e) {
 				if (parameterWindow.getFormParameter().getLastAction() == UserMessages.USER_CONFIRM_OK) {
 					addParameterDataSource((IndexedContainer) gridParameters.getContainerDataSource(), parameter);
