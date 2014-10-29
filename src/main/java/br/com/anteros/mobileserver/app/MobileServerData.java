@@ -425,6 +425,7 @@ public class MobileServerData {
 			ActionSynchronism action, String[] params, Boolean executeCommit) throws Exception {
 		SynchronismManager synchronismManager = getMobileSession(application).getSynchronismManager();
 		SQLSession sqlSession = synchronismManager.getSqlSession();
+		
 
 		MobileRequest mr = new MobileRequest();
 
@@ -438,6 +439,7 @@ public class MobileServerData {
 		mr.addAction(ma);
 		MobileResponse result = new MobileResponse();
 		try {
+			sqlSession.getTransaction().begin();
 			result = synchronismManager.executeRequest(mr);
 			if (executeCommit)
 				sqlSession.getTransaction().commit();
