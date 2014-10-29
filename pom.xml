@@ -15,7 +15,21 @@
 		<dependency>
 			<groupId>br.com.anteros</groupId>
 			<artifactId>Anteros-MobileServer-Core</artifactId>
-			<version>0.0.3-SNAPSHOT</version>
+			<version>LATEST</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>br.com.anteros</groupId>
+			<artifactId>Anteros-Bean-Validation</artifactId>
+			<version>LATEST</version>
+			<scope>provided</scope>
+		</dependency>
+		
+			<dependency>
+			<groupId>br.com.anteros</groupId>
+			<artifactId>Anteros-Bean-Validation-Api</artifactId>
+			<version>LATEST</version>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
