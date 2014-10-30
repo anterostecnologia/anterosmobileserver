@@ -215,6 +215,7 @@ public class MobileServerData {
 		TableSynchronism table = (TableSynchronism) itemToLoad.getItemProperty(PROPERTY_DATA).getValue();
 		try {
 			SQLSession sqlSession = getSQLSession(application);
+			sqlSession.getTransaction().begin();
 			fields = (List<FieldSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'CAMPO' AND ID_OBJETO_PAI = '" + table.getId()
 							+ "' ORDER BY NOME_OBJETO", FieldSynchronism.class).getResultList();
@@ -366,6 +367,7 @@ public class MobileServerData {
 		IndexedContainer result = new IndexedContainer();
 		try {
 			SQLSession sqlSession = getSQLSession(application);
+			sqlSession.getTransaction().begin();
 			Set<StoredProcedureSchema> procedures = sqlSession.getDialect().getStoredProcedures(
 					sqlSession.getConnection(), false);
 
@@ -381,6 +383,7 @@ public class MobileServerData {
 			}
 			result.sort(new Object[] { PROPERTY_NAME }, new boolean[] { true });
 
+			sqlSession.getTransaction().rollback();
 		} catch (Exception e) {
 			application.getMainWindow().showNotification("Ocorreu um erro lendo os Procedimentos " + e.getMessage(),
 					Window.Notification.TYPE_ERROR_MESSAGE);

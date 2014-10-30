@@ -78,6 +78,7 @@ public class MobileServletController extends HttpConnectionServer {
 				ApplicationSynchronism app = mobileServerContext.getDictionaryManager().getApplicationByName(
 						mobileRequest.getApplication(), mobileRequest.getClientId());
 				synchronismManager = mobileSession.getSynchronismManager(app);
+				synchronismManager.getSqlSession().getTransaction().begin();
 				String clientInfo = synchronismManager.getSqlSession().getClientInfo();
 				if (clientInfo != null && clientInfo.length() > 0 && !clientInfo.contains(session.getId()))
 					synchronismManager.getSqlSession().setClientInfo(clientInfo + "/" + session.getId());
@@ -91,7 +92,6 @@ public class MobileServletController extends HttpConnectionServer {
 
 			try {
 				session.setAttribute(MobileContextListener.STATUS, MobileContextListener.EXECUTANDO);
-				synchronismManager.getSqlSession().getTransaction().begin();
 				mobileResponse = synchronismManager.executeRequest(mobileRequest);
 				log.info(session.getId() + " Resposta a ser enviada" + " ##" + mobileRequest.getClientId());
 				mobileResponse.showDetails();
