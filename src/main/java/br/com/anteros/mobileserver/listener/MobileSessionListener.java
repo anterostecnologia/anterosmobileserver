@@ -22,16 +22,15 @@ import javax.servlet.http.HttpSessionBindingListener;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import br.com.anteros.core.log.Logger;
+import br.com.anteros.core.log.LoggerProvider;
 import br.com.anteros.mobileserver.app.MobileServerContext;
 import br.com.anteros.mobileserver.app.MobileSession;
 
 public class MobileSessionListener implements HttpSessionBindingListener, HttpSessionActivationListener,
 		HttpSessionAttributeListener, HttpSessionListener {
 
-	private static Logger log = LoggerFactory.getLogger(MobileSessionListener.class);
+	private static Logger LOG = LoggerProvider.getInstance().getLogger(MobileSessionListener.class);
 
 	public MobileSessionListener() {
 	}
@@ -55,7 +54,7 @@ public class MobileSessionListener implements HttpSessionBindingListener, HttpSe
 	}
 
 	public void sessionCreated(HttpSessionEvent sessionEvent) {
-		log.info("Sessão CRIADA " + sessionEvent.getSession().getId());
+		LOG.info("Sessão CRIADA " + sessionEvent.getSession().getId());
 
 	}
 
@@ -74,7 +73,7 @@ public class MobileSessionListener implements HttpSessionBindingListener, HttpSe
 		}
 		mSession = null;		 
 		
-		log.info("=> Sessão DESTRUÍDA " + sessionEvent.getSession().getId());
+		LOG.info("=> Sessão DESTRUÍDA " + sessionEvent.getSession().getId());
 
 	}
 }

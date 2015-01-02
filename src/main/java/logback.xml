@@ -4,13 +4,16 @@
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n
+			</Pattern>
 		</layout>
 	</appender>
-	
-	<appender name="MOBILE_SERVER" class="br.com.anteros.mobileserver.app.form.MobileServerLogAppender">
+
+	<appender name="MOBILE_SERVER"
+		class="br.com.anteros.mobileserver.app.form.MobileServerLogAppender">
 		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n</Pattern>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n
+			</Pattern>
 		</layout>
 	</appender>
 
@@ -18,7 +21,8 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>anteros_mobile_server.log</file>
 		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>%d{yyyy-MM-dd_HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+			<Pattern>%d{yyyy-MM-dd_HH:mm:ss} [%thread] %-5level %logger{36} -
+				%msg%n</Pattern>
 		</layout>
 
 		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
@@ -34,9 +38,23 @@
 
 	</appender>
 
-	<root level="DEBUG">
+	<logger name="br.com.anteros.mobileserver" level="ALL">
+		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 		<appender-ref ref="MOBILE_SERVER" />
+	</logger>
+	
+	<logger name="br.com.anteros.mobile.core" level="ALL">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+		<appender-ref ref="MOBILE_SERVER" />
+	</logger>
+	
+	<logger name="br.com.anteros.persistence" level="ALL">
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+	<root level="OFF">
 	</root>
 
 </configuration>

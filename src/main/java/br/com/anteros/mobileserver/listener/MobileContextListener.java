@@ -20,9 +20,8 @@ import javax.servlet.ServletContextAttributeListener;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import br.com.anteros.core.log.Logger;
+import br.com.anteros.core.log.LoggerProvider;
 import br.com.anteros.mobile.core.synchronism.engine.DictionaryManager;
 import br.com.anteros.mobileserver.app.MobileServerContext;
 
@@ -35,28 +34,28 @@ public class MobileContextListener implements ServletContextListener, ServletCon
 	public static final String STATUS = "status";
 	public static final Object LIBERADO = "liberado";
 	public static final Object EXECUTANDO = "executando";
-	
-	private static Logger log = LoggerFactory.getLogger(MobileContextListener.class);
+
+	private static Logger LOG = LoggerProvider.getInstance().getLogger(MobileContextListener.class);
 
 	public MobileContextListener() {
 	}
 
 	public void contextInitialized(ServletContextEvent event) {
 
-		log.info("INICIALIZAÇÃO DO CONTEXTO DA APLICAÇÃO ANTEROS MOBILE SERVER");
+		LOG.info("INICIALIZAÇÃO DO CONTEXTO DA APLICAÇÃO ANTEROS MOBILE SERVER");
 
 		try {
 			MobileServerContext mobileServerContext = new MobileServerContext(new DictionaryManager());
 			event.getServletContext().setAttribute(MOBILE_SERVER_CONTEXT, mobileServerContext);
 			if (!mobileServerContext.isConfigured())
-				log.info("ATENÇÃO - O servidor ainda não foi configurado. Acesse a tela de configuração no browser.");
+				LOG.info("ATENÇÃO - O servidor ainda não foi configurado. Acesse a tela de configuração no browser.");
 			else
 				mobileServerContext.initializeContext("ANTEROS_MOBILE_SERVER");
 		} catch (Exception e) {
-			log.info("ATENÇÃO - Ocorrreu um ERRO iniciando CONEXÃO com o BANCO de DADOS " + e.getMessage());
+			LOG.info("ATENÇÃO - Ocorrreu um ERRO iniciando CONEXÃO com o BANCO de DADOS " + e.getMessage());
 			e.printStackTrace();
 		}
-		log.info("FIM DA INICIALIZAÇÃO DO CONTEXTO DA APLICAÇÃO ANTEROS MOBILE SERVER");
+		LOG.info("FIM DA INICIALIZAÇÃO DO CONTEXTO DA APLICAÇÃO ANTEROS MOBILE SERVER");
 	}
 
 	public void attributeAdded(ServletContextAttributeEvent arg0) {
@@ -77,6 +76,6 @@ public class MobileContextListener implements ServletContextListener, ServletCon
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		log.info("FINALIZAÇÃO DO CONTEXTO DA APLICAÇÃO ANTEROS MOBILE SERVER");
+		LOG.info("FINALIZAÇÃO DO CONTEXTO DA APLICAÇÃO ANTEROS MOBILE SERVER");
 	}
 }

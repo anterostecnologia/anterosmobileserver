@@ -35,7 +35,7 @@ public class PoolDatasource {
 				((ComboPooledDataSource) dataSource).setAutoCommitOnClose(false);
 
 				/*
-				 * # Número de conexõs que o pool tentará adiquirur durante a
+				 * # Número de conexõs que o pool tentará adquirir durante a
 				 * inicialização. Deve ser um número entre minPoolSize e
 				 * maxPoolSize.
 				 */
@@ -49,7 +49,7 @@ public class PoolDatasource {
 				 */
 				((ComboPooledDataSource) dataSource).setMaxPoolSize(maxPoolSize);
 				/*
-				 * # Segundos que uma Conexão será mantida no pool sem ser
+				 * # Segundos que uma conexão será mantida no pool sem ser
 				 * usada, antes de ser descartada. Zero significa que a conexão
 				 * nunca expira.
 				 */

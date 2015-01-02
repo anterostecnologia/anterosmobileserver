@@ -11,9 +11,8 @@ import java.util.prefs.Preferences;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import br.com.anteros.core.log.Logger;
+import br.com.anteros.core.log.LoggerProvider;
 import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobile.core.synchronism.engine.DictionaryManager;
 import br.com.anteros.mobile.core.synchronism.model.ActionSynchronism;
@@ -23,6 +22,7 @@ import br.com.anteros.mobile.core.synchronism.model.ParameterSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.ProcedureSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.Synchronism;
 import br.com.anteros.mobile.core.synchronism.model.TableSynchronism;
+import br.com.anteros.mobileserver.controller.MobileServletController;
 import br.com.anteros.mobileserver.controller.PoolDatasource;
 import br.com.anteros.persistence.session.SQLSessionFactory;
 import br.com.anteros.persistence.session.configuration.AnterosPersistenceConfiguration;
@@ -64,7 +64,7 @@ public class MobileServerContext {
 	private Map<ApplicationSynchronism, SQLSessionFactory> sessionFactories = new HashMap<ApplicationSynchronism, SQLSessionFactory>();
 	private Set<MobileSession> mobileSessions = new HashSet<MobileSession>();
 	private DictionaryManager dictionaryManager;
-	private static Logger log = LoggerFactory.getLogger(MobileServerContext.class);
+	private static Logger LOG = LoggerProvider.getInstance().getLogger(MobileServerContext.class);
 
 	public MobileServerContext(DictionaryManager dictionaryManager) {
 		this.dictionaryManager = dictionaryManager;
@@ -125,8 +125,8 @@ public class MobileServerContext {
 
 				sqlSessionFactory = new AnterosPersistenceConfiguration(dataSource)
 						.addProperty(AnterosPersistenceProperties.DIALECT, dialectClass.getName())
-						.addProperty(AnterosPersistenceProperties.SHOW_SQL, "true")//String.valueOf(showSql))
-						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, "true")//String.valueOf(formatSql))
+						.addProperty(AnterosPersistenceProperties.SHOW_SQL, String.valueOf(showSql))
+						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, String.valueOf(formatSql))
 						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG,
 								(applicationSynchronism.getDefaultCatalog() == null ? "" : applicationSynchronism
 										.getDefaultCatalog()))
@@ -138,8 +138,8 @@ public class MobileServerContext {
 						.buildSessionFactory();
 				sessionFactories.put(applicationSynchronism, sqlSessionFactory);
 			} else
-				log.error("Ocorreu um erro inicializando pool de conexões da aplicação "
-						+ applicationSynchronism.getName() + ". Verifique as configurações da aplicação.");
+				LOG.error("Ocorreu um erro inicializando pool de conexões da aplicação com nome "
+						+ "["+applicationSynchronism.getName()+"]" + ". Verifique as configurações da aplicação.");
 		}
 		return sqlSessionFactory;
 	}
@@ -179,8 +179,8 @@ public class MobileServerContext {
 						.addAnnotatedClass(FieldSynchronism.class).addAnnotatedClass(ParameterSynchronism.class)
 						.addAnnotatedClass(ProcedureSynchronism.class).addAnnotatedClass(TableSynchronism.class)
 						.addProperty(AnterosPersistenceProperties.DIALECT, dialectClass.getName())
-						.addProperty(AnterosPersistenceProperties.SHOW_SQL, "true")//String.valueOf(showSql))
-						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, "true")//String.valueOf(formatSql))
+						.addProperty(AnterosPersistenceProperties.SHOW_SQL, String.valueOf(showSql))
+						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, String.valueOf(formatSql))
 						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG, defaultCatalog)
 						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA, defaultSchema)
 						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
