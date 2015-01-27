@@ -164,7 +164,7 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 		fldPassword.setWidth("157px");
 		fldPassword.setHeight("-1px");
 		fldPassword.setCaption("Senha");
-		
+
 		cbPoolType = new ComboBox();
 		cbPoolType.setImmediate(false);
 		cbPoolType.setWidth("-1px");
@@ -177,7 +177,7 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 		cbPoolType.setCaption("Gerenciador conexões");
 		cbPoolType.setRequiredError("Informe o gerenciador de conexões da aplicação.");
 		cbPoolType.setStyleName("small");
-		
+
 		fldJNDI = new TextField();
 		fldJNDI.setImmediate(false);
 		fldJNDI.setWidth("250px");
@@ -260,7 +260,6 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 		applicationForm.setInvalidCommitted(false);
 		applicationForm.getFooter().setMargin(false, false, true, true);
 	}
-
 
 	public void buttonClick(ClickEvent event) {
 		final ApplicationForm comp = this;
@@ -353,7 +352,7 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 			fldJNDI.setValue(applicationSynchronism.getJndiName());
 		if ("S".equals(applicationSynchronism.getActive()))
 			chActive.setValue(true);
-		else 
+		else
 			chActive.setValue(false);
 	}
 
@@ -376,30 +375,29 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 			applicationSynchronism.setActive("S");
 		else
 			applicationSynchronism.setActive("N");
-		
-		applicationSynchronism.setDefaultCatalog(fldCatalog.getValue()+"");
-		applicationSynchronism.setDefaultSchema(fldSchema.getValue()+"");
-		applicationSynchronism.setDialect(cbDialect.getValue()+"");
-		applicationSynchronism.setUser(fldUser.getValue()+"");
-		applicationSynchronism.setPassword(fldPassword.getValue()+"");
-		applicationSynchronism.setConnectionPoolType(cbPoolType.getValue()+"");
-		applicationSynchronism.setJndiName(fldJNDI.getValue()+"");
-		
+
+		applicationSynchronism.setDefaultCatalog(fldCatalog.getValue() + "");
+		applicationSynchronism.setDefaultSchema(fldSchema.getValue() + "");
+		applicationSynchronism.setDialect(cbDialect.getValue() + "");
+		applicationSynchronism.setUser(fldUser.getValue() + "");
+		applicationSynchronism.setPassword(fldPassword.getValue() + "");
+		applicationSynchronism.setConnectionPoolType(cbPoolType.getValue() + "");
+		applicationSynchronism.setJndiName(fldJNDI.getValue() + "");
+
 		Class dialectClass = null;
-		if (MobileServerContext.H2.equals(cbDialect.getValue()+""))
+		if (MobileServerContext.H2.equals(cbDialect.getValue() + ""))
 			dialectClass = H2Dialect.class;
-		else if (MobileServerContext.ORACLE.equals(cbDialect.getValue()+""))
-			dialectClass = OracleDialect.class;
-		else if (MobileServerContext.MYSQL.equals(cbDialect.getValue()+""))
+		else if (MobileServerContext.ORACLE.equals(cbDialect.getValue() + ""))
+			dialectClass = oracle.jdbc.driver.OracleDriver.class;
+		else if (MobileServerContext.MYSQL.equals(cbDialect.getValue() + ""))
 			dialectClass = MySQLDialect.class;
-		else if (MobileServerContext.FIREBIRD.equals(cbDialect.getValue()+""))
+		else if (MobileServerContext.FIREBIRD.equals(cbDialect.getValue() + ""))
 			dialectClass = FirebirdDialect.class;
-		else if (MobileServerContext.POSTGRESQL.equals(cbDialect.getValue()+""))
+		else if (MobileServerContext.POSTGRESQL.equals(cbDialect.getValue() + ""))
 			dialectClass = PostgreSqlDialect.class;
 		applicationSynchronism.setDriverClass(dialectClass.getName());
-		
-		applicationSynchronism.setJdbcUrl(fldURL.getValue()+"");
+
+		applicationSynchronism.setJdbcUrl(fldURL.getValue() + "");
 	}
-	
 
 }

@@ -148,21 +148,7 @@ public class MobileServerApplication extends Application implements ValueChangeL
 	private Button btnDuplicateAction;
 
 	public void init() {
-		Transaction transaction = null;
-		try {
-			transaction = MobileServerData.getMobileSession(this).getSynchronismManager().getSqlSession()
-					.getTransaction();
-			transaction.begin();
-			buildMainLayout();
-		} catch (Exception ex) {
-			throw new RuntimeException(ex);
-		} finally {
-			try {
-				transaction.rollback();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+		buildMainLayout();
 	}
 
 	private void buildMainLayout() {

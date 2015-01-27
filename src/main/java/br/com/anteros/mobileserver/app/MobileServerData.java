@@ -86,8 +86,10 @@ public class MobileServerData {
 	public static HierarchicalContainer getApplications(MobileServerApplication application) {
 		Item item = null;
 		HierarchicalContainer hwContainer = null;
+		SQLSession sqlSession = null;
 		try {
-			SQLSession sqlSession = getSQLSession(application);
+			sqlSession = getSQLSession(application);
+			sqlSession.getTransaction().begin();
 			List<ApplicationSynchronism> applications = null;
 			applications = (List<ApplicationSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'APLICACAO' ORDER BY NOME_OBJETO",
@@ -107,8 +109,14 @@ public class MobileServerData {
 					hwContainer.setChildrenAllowed(app.getId(), true);
 				}
 			}
-
+			sqlSession.getTransaction().commit();
 		} catch (Exception e) {
+			if (sqlSession != null)
+				try {
+					sqlSession.getTransaction().rollback();
+				} catch (Exception e1) {
+				}
+
 			application.getMainWindow().showNotification("Ocorreu um erro lendo as Aplicações " + e.getMessage(),
 					Window.Notification.TYPE_ERROR_MESSAGE);
 			e.printStackTrace();
@@ -136,7 +144,7 @@ public class MobileServerData {
 					"Ocorreu um erro lendo as Ações " + e.getMessage() + " da aplicação " + app.getName(),
 					Window.Notification.TYPE_ERROR_MESSAGE);
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				transaction.rollback();
 			} catch (Exception e) {
@@ -178,7 +186,7 @@ public class MobileServerData {
 							"Ocorreu um erro lendo as Tabelas/Procedimentos " + e.getMessage() + " da Ação "
 									+ action.getName(), Window.Notification.TYPE_ERROR_MESSAGE);
 			e.printStackTrace();
-		}finally{
+		} finally {
 			try {
 				transaction.rollback();
 			} catch (Exception e) {
@@ -213,13 +221,21 @@ public class MobileServerData {
 		List<FieldSynchronism> fields = null;
 
 		TableSynchronism table = (TableSynchronism) itemToLoad.getItemProperty(PROPERTY_DATA).getValue();
+		SQLSession sqlSession = null;
 		try {
-			SQLSession sqlSession = getSQLSession(application);
+			sqlSession = getSQLSession(application);
 			sqlSession.getTransaction().begin();
 			fields = (List<FieldSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'CAMPO' AND ID_OBJETO_PAI = '" + table.getId()
 							+ "' ORDER BY NOME_OBJETO", FieldSynchronism.class).getResultList();
+			sqlSession.getTransaction().commit();
 		} catch (Exception e) {
+			if (sqlSession != null)
+				try {
+					sqlSession.getTransaction().rollback();
+				} catch (Exception e1) {
+				}
+
 			application.getMainWindow().showNotification(
 					"Ocorreu um erro lendo os Campos " + e.getMessage() + " da Tabela " + table.getName(),
 					Window.Notification.TYPE_ERROR_MESSAGE);
@@ -254,12 +270,21 @@ public class MobileServerData {
 		List<ParameterSynchronism> parameters = null;
 
 		TableSynchronism table = (TableSynchronism) itemToLoad.getItemProperty(PROPERTY_DATA).getValue();
+		SQLSession sqlSession = null;
 		try {
-			SQLSession sqlSession = getSQLSession(application);
+			sqlSession = getSQLSession(application);
+			sqlSession.getTransaction().begin();
 			parameters = (List<ParameterSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'PARAMETRO' AND ID_OBJETO_PAI = '" + table.getId()
 							+ "' ORDER BY NOME_OBJETO", ParameterSynchronism.class).getResultList();
+			sqlSession.getTransaction().commit();
 		} catch (Exception e) {
+			if (sqlSession != null)
+				try {
+					sqlSession.getTransaction().rollback();
+				} catch (Exception e1) {
+				}
+
 			application.getMainWindow().showNotification(
 					"Ocorreu um erro lendo os Parâmetros " + e.getMessage() + " da Tabela " + table.getName(),
 					Window.Notification.TYPE_ERROR_MESSAGE);
@@ -297,7 +322,8 @@ public class MobileServerData {
 			SQLSession sqlSession = getSQLSession(application);
 			parameters = (List<ParameterSynchronism>) sqlSession.createQuery(
 					"SELECT * FROM MOBILE_OBJETO WHERE TP_OBJETO = 'PARAMETRO' AND ID_OBJETO_PAI = '"
-							+ procedure.getId() + "' ORDER BY SEQUENCE_PARAMETER", ParameterSynchronism.class).getResultList();
+							+ procedure.getId() + "' ORDER BY SEQUENCE_PARAMETER", ParameterSynchronism.class)
+					.getResultList();
 		} catch (Exception e) {
 			application.getMainWindow().showNotification(
 					"Ocorreu um erro lendo os Parâmetros " + e.getMessage() + " da Procedure " + procedure.getName(),
@@ -365,8 +391,9 @@ public class MobileServerData {
 
 	public static IndexedContainer loadAllProcedures(MobileServerApplication application) {
 		IndexedContainer result = new IndexedContainer();
+		SQLSession sqlSession = null;
 		try {
-			SQLSession sqlSession = getSQLSession(application);
+			sqlSession = getSQLSession(application);
 			sqlSession.getTransaction().begin();
 			Set<StoredProcedureSchema> procedures = sqlSession.getDialect().getStoredProcedures(
 					sqlSession.getConnection(), false);
@@ -383,8 +410,14 @@ public class MobileServerData {
 			}
 			result.sort(new Object[] { PROPERTY_NAME }, new boolean[] { true });
 
-			sqlSession.getTransaction().rollback();
+			sqlSession.getTransaction().commit();
 		} catch (Exception e) {
+			if (sqlSession != null)
+				try {
+					sqlSession.getTransaction().rollback();
+				} catch (Exception e1) {
+				}
+
 			application.getMainWindow().showNotification("Ocorreu um erro lendo os Procedimentos " + e.getMessage(),
 					Window.Notification.TYPE_ERROR_MESSAGE);
 			e.printStackTrace();
@@ -428,7 +461,6 @@ public class MobileServerData {
 			ActionSynchronism action, String[] params, Boolean executeCommit) throws Exception {
 		SynchronismManager synchronismManager = getMobileSession(application).getSynchronismManager();
 		SQLSession sqlSession = synchronismManager.getSqlSession();
-		
 
 		MobileRequest mr = new MobileRequest();
 
@@ -479,6 +511,7 @@ public class MobileServerData {
 	public static boolean save(MobileServerApplication application, Synchronism synchronism) throws Exception {
 		SQLSession sqlSession = getSQLSession(application);
 		try {
+			sqlSession.getTransaction().begin();
 			sqlSession.save(synchronism);
 			sqlSession.getTransaction().commit();
 			return true;
