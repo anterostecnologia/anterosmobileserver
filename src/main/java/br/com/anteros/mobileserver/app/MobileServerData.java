@@ -356,6 +356,7 @@ public class MobileServerData {
 		MobileSession mobileSession = getMobileSession(application);
 		SQLSession sqlSession = mobileSession.getSynchronismManager().getSqlSession();
 		sqlSession.setClientId("ANTEROS_MOBILE_SERVER");
+		sqlSession.setClientInfo("Anteros Mobile Server Session ID: "+mobileSession.getHttpSession().getId());
 		return sqlSession;
 	}
 

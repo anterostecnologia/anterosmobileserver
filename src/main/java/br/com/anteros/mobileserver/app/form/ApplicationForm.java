@@ -384,7 +384,7 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 		applicationSynchronism.setConnectionPoolType(cbPoolType.getValue() + "");
 		applicationSynchronism.setJndiName(fldJNDI.getValue() + "");
 
-		Class dialectClass = null;
+		Class<?> dialectClass = null;
 		if (MobileServerContext.H2.equals(cbDialect.getValue() + ""))
 			dialectClass = H2Dialect.class;
 		else if (MobileServerContext.ORACLE.equals(cbDialect.getValue() + ""))

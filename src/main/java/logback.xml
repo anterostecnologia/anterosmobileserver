@@ -50,9 +50,9 @@
 		<appender-ref ref="MOBILE_SERVER" />
 	</logger>
 	
-	<logger name="br.com.anteros.persistence" level="ALL">
+	<!-- <logger name="br.com.anteros.persistence" level="ALL">
 		<appender-ref ref="STDOUT" />
-	</logger>
+	</logger> -->
 
 	<root level="OFF">
 	</root>
