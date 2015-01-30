@@ -22,7 +22,6 @@ import br.com.anteros.mobile.core.synchronism.model.ParameterSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.ProcedureSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.Synchronism;
 import br.com.anteros.mobile.core.synchronism.model.TableSynchronism;
-import br.com.anteros.mobileserver.controller.MobileServletController;
 import br.com.anteros.mobileserver.controller.PoolDatasource;
 import br.com.anteros.persistence.session.SQLSessionFactory;
 import br.com.anteros.persistence.session.configuration.AnterosPersistenceConfiguration;

@@ -384,19 +384,18 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 		applicationSynchronism.setConnectionPoolType(cbPoolType.getValue() + "");
 		applicationSynchronism.setJndiName(fldJNDI.getValue() + "");
 
-		Class<?> dialectClass = null;
+		Class<?> driverClass = null;
 		if (MobileServerContext.H2.equals(cbDialect.getValue() + ""))
-			dialectClass = H2Dialect.class;
+			driverClass = org.h2.Driver.class;
 		else if (MobileServerContext.ORACLE.equals(cbDialect.getValue() + ""))
-			dialectClass = oracle.jdbc.driver.OracleDriver.class;
+			driverClass = oracle.jdbc.driver.OracleDriver.class;
 		else if (MobileServerContext.MYSQL.equals(cbDialect.getValue() + ""))
-			dialectClass = MySQLDialect.class;
+			driverClass = com.mysql.jdbc.Driver.class;
 		else if (MobileServerContext.FIREBIRD.equals(cbDialect.getValue() + ""))
-			dialectClass = FirebirdDialect.class;
+			driverClass = org.firebirdsql.jdbc.FBDriver.class;
 		else if (MobileServerContext.POSTGRESQL.equals(cbDialect.getValue() + ""))
-			dialectClass = PostgreSqlDialect.class;
-		applicationSynchronism.setDriverClass(dialectClass.getName());
-
+			driverClass = org.postgresql.Driver.class;
+		applicationSynchronism.setDriverClass(driverClass.getName());
 		applicationSynchronism.setJdbcUrl(fldURL.getValue() + "");
 	}
 

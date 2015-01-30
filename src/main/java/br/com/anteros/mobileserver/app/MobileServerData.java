@@ -460,7 +460,7 @@ public class MobileServerData {
 
 	public static MobileResponse executeActionSynchronism(MobileServerApplication application,
 			ActionSynchronism action, String[] params, Boolean executeCommit) throws Exception {
-		SynchronismManager synchronismManager = getMobileSession(application).getSynchronismManager();
+		SynchronismManager synchronismManager = getMobileSession(application).getSynchronismManager((ApplicationSynchronism) action.getObjectOwner());
 		SQLSession sqlSession = synchronismManager.getSqlSession();
 
 		MobileRequest mr = new MobileRequest();
