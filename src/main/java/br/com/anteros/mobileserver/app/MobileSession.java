@@ -65,8 +65,10 @@ public class MobileSession {
 				e.printStackTrace();
 			}
 		}
+		clearSessions();
 		try {
-			synchronismManager.closeSession();
+			if (synchronismManager != null)
+				synchronismManager.closeSession();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
