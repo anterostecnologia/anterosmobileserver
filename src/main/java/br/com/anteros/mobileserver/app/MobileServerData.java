@@ -356,7 +356,7 @@ public class MobileServerData {
 		MobileSession mobileSession = getMobileSession(application);
 		SQLSession sqlSession = mobileSession.getSynchronismManager().getSqlSession();
 		sqlSession.setClientId("ANTEROS_MOBILE_SERVER");
-		sqlSession.setClientInfo("Anteros Mobile Srv WebAdmin SID: "+mobileSession.getHttpSession().getId());
+		sqlSession.setClientInfo("Anteros Mobile Srv WebAdm SID:"+mobileSession.getHttpSession().getId());
 		return sqlSession;
 	}
 
@@ -467,7 +467,7 @@ public class MobileServerData {
 		ApplicationSynchronism app = (ApplicationSynchronism) action.getObjectOwner();
 		SynchronismManager synchronismManager = getMobileSession(application).getSynchronismManager(app);
 		SQLSession sqlSession = synchronismManager.getSqlSession();
-		sqlSession.setClientInfo("App: "+app.getName()+" WebClient SID: "+getHttpSession(application).getId());
+		sqlSession.setClientInfo(app.getName()+" WebClient SID:"+getHttpSession(application).getId());
 
 		MobileRequest mr = new MobileRequest();
 
