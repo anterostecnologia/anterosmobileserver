@@ -78,9 +78,7 @@ public class MobileServletController extends HttpConnectionServer {
 						mobileRequest.getApplication(), mobileRequest.getClientId());
 				synchronismManager = mobileSession.getSynchronismManager(app);
 				synchronismManager.getSqlSession().getTransaction().begin();
-				String clientInfo = synchronismManager.getSqlSession().getClientInfo();
-				if (clientInfo != null && clientInfo.length() > 0 && !clientInfo.contains(session.getId()))
-					synchronismManager.getSqlSession().setClientInfo(clientInfo + "/" + session.getId());
+				synchronismManager.getSqlSession().setClientInfo("App: "+app.getName()+" Client SID: "+session.getId());
 			} catch (Exception e) {
 				LOG.error("Ocorreu um erro obtendo o objeto de sincronismo." + e.getMessage() + " ##"
 						+ mobileRequest.getClientId());

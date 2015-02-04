@@ -183,7 +183,7 @@ public class MobileServerContext {
 						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG, defaultCatalog)
 						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA, defaultSchema)
 						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
-						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, "Anteros-MobileServer")
+						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, "Anteros Mobile Srv Dictionary")
 						.buildSessionFactory();
 			}
 		}
