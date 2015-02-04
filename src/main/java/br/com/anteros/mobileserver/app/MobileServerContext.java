@@ -81,9 +81,8 @@ public class MobileServerContext {
 	}
 
 	/**
-	 * Cria e retorna uma fábrica de sessões para ser usada pela aplicação
-	 * cadastrada no dicionário. Cada aplicação pode estar apontando para um
-	 * banco de dados e usando pool de conexões diferentes.
+	 * Cria e retorna uma fábrica de sessões para ser usada pela aplicação cadastrada no dicionário. Cada aplicação pode
+	 * estar apontando para um banco de dados e usando pool de conexões diferentes.
 	 * 
 	 * @param applicationSynchronism
 	 *            Aplicação
@@ -92,22 +91,19 @@ public class MobileServerContext {
 	 * @return Fábrica de sessões
 	 * @throws Exception
 	 */
-	protected SQLSessionFactory buildSessionFactory(ApplicationSynchronism applicationSynchronism, boolean rebuild)
-			throws Exception {
+	protected SQLSessionFactory buildSessionFactory(ApplicationSynchronism applicationSynchronism, boolean rebuild) throws Exception {
 		if (rebuild)
 			sessionFactories.remove(applicationSynchronism);
 
 		SQLSessionFactory sqlSessionFactory = sessionFactories.get(applicationSynchronism);
 		if (sqlSessionFactory == null) {
 			if (!StringUtils.isEmpty(applicationSynchronism.getJdbcUrl())) {
-				DataSource dataSource = dataSources.getDataSource(applicationSynchronism.getJdbcUrl(),
-						applicationSynchronism.getUser(), applicationSynchronism.getPassword(), applicationSynchronism
-								.getDriverClass(), (applicationSynchronism.getInitialPoolSize() == null ? 5
-								: applicationSynchronism.getInitialPoolSize().intValue()), (applicationSynchronism
-								.getAcquireIncrement() == null ? 2 : applicationSynchronism.getAcquireIncrement()
-								.intValue()), (applicationSynchronism.getMaxPoolSize() == null ? 100
-								: applicationSynchronism.getMaxPoolSize().intValue()), (applicationSynchronism
-								.getMinPoolSize() == null ? 5 : applicationSynchronism.getMinPoolSize().intValue()),
+				DataSource dataSource = dataSources.getDataSource(applicationSynchronism.getJdbcUrl(), applicationSynchronism.getUser(),
+						applicationSynchronism.getPassword(), applicationSynchronism.getDriverClass(),
+						(applicationSynchronism.getInitialPoolSize() == null ? 5 : applicationSynchronism.getInitialPoolSize().intValue()),
+						(applicationSynchronism.getAcquireIncrement() == null ? 2 : applicationSynchronism.getAcquireIncrement().intValue()),
+						(applicationSynchronism.getMaxPoolSize() == null ? 100 : applicationSynchronism.getMaxPoolSize().intValue()),
+						(applicationSynchronism.getMinPoolSize() == null ? 5 : applicationSynchronism.getMinPoolSize().intValue()),
 						applicationSynchronism.getConnectionPoolType(), applicationSynchronism.getJndiName());
 
 				Class<?> dialectClass = null;
@@ -127,26 +123,21 @@ public class MobileServerContext {
 						.addProperty(AnterosPersistenceProperties.SHOW_SQL, String.valueOf(showSql))
 						.addProperty(AnterosPersistenceProperties.FORMAT_SQL, String.valueOf(formatSql))
 						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG,
-								(applicationSynchronism.getDefaultCatalog() == null ? "" : applicationSynchronism
-										.getDefaultCatalog()))
-						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA,
-								applicationSynchronism.getDefaultSchema())
+								(applicationSynchronism.getDefaultCatalog() == null ? "" : applicationSynchronism.getDefaultCatalog()))
+						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA, applicationSynchronism.getDefaultSchema())
 						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
-						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO,
-								applicationSynchronism.getName())
-						.buildSessionFactory();
+						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, applicationSynchronism.getName()).buildSessionFactory();
 				sessionFactories.put(applicationSynchronism, sqlSessionFactory);
 			} else
-				LOG.error("Ocorreu um erro inicializando pool de conexões da aplicação com nome "
-						+ "["+applicationSynchronism.getName()+"]" + ". Verifique as configurações da aplicação.");
+				LOG.error("Ocorreu um erro inicializando pool de conexões da aplicação com nome " + "[" + applicationSynchronism.getName() + "]"
+						+ ". Verifique as configurações da aplicação.");
 		}
 		return sqlSessionFactory;
 	}
 
 	/**
-	 * Cria e retorna uma fábrica de sessões. Esta fábrica vai criar sessões
-	 * para o dicionário de dados que pode estar em servidor diferente do
-	 * servidor onde está os dados da aplicação.
+	 * Cria e retorna uma fábrica de sessões. Esta fábrica vai criar sessões para o dicionário de dados que pode estar
+	 * em servidor diferente do servidor onde está os dados da aplicação.
 	 * 
 	 * @param rebuild
 	 *            Recria a fábrica
@@ -159,8 +150,8 @@ public class MobileServerContext {
 
 		if (isConfigured()) {
 			if (sessionFactory == null) {
-				DataSource dataSource = dataSources.getDataSource(this.jdbcUrl, user, password, driverClass,
-						initialPoolSize, acquireIncrement, maxPoolSize, minPoolSize, connectionPoolType, jndiName);
+				DataSource dataSource = dataSources.getDataSource(this.jdbcUrl, user, password, driverClass, initialPoolSize, acquireIncrement,
+						maxPoolSize, minPoolSize, connectionPoolType, jndiName);
 				Class<?> dialectClass = null;
 				if (MobileServerContext.H2.equals(dialect))
 					dialectClass = H2Dialect.class;
@@ -183,8 +174,7 @@ public class MobileServerContext {
 						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG, defaultCatalog)
 						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA, defaultSchema)
 						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
-						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, "Anteros Mobile Srv Dictionary")
-						.buildSessionFactory();
+						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, "Anteros Mobile Srv Dictionary").buildSessionFactory();
 			}
 		}
 		return sessionFactory;
@@ -214,10 +204,9 @@ public class MobileServerContext {
 		queryTimeout = anterosPrefs.getInt("queryTimeout", 20);
 	}
 
-	public void writePreferences(String jdbcUrl, String user, String password, int acquireIncrement,
-			int initialPoolSize, int maxPoolSize, int minPoolSize, boolean showSql, String dialect, boolean formatSql,
-			String defaultSchema, String defaultCatalog, String accessUser, String accessPassword,
-			String connectionPoolType, String jndiName, int queryTimeout) {
+	public void writePreferences(String jdbcUrl, String user, String password, int acquireIncrement, int initialPoolSize, int maxPoolSize,
+			int minPoolSize, boolean showSql, String dialect, boolean formatSql, String defaultSchema, String defaultCatalog, String accessUser,
+			String accessPassword, String connectionPoolType, String jndiName, int queryTimeout) {
 		this.jdbcUrl = jdbcUrl;
 		this.user = user;
 		this.password = password;
@@ -284,9 +273,10 @@ public class MobileServerContext {
 
 	public MobileSession removeMobileSession(HttpSession httpSession) {
 		for (MobileSession session : mobileSessions) {
-			if (session.getHttpSession().equals(httpSession))
+			if (session.getHttpSession().equals(httpSession)) {
 				mobileSessions.remove(session);
-			return session;
+				return session;
+			}
 		}
 		return null;
 	}
