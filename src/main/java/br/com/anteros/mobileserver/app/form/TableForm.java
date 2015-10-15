@@ -15,11 +15,15 @@
  ******************************************************************************/
 package br.com.anteros.mobileserver.app.form;
 
+import java.io.UnsupportedEncodingException;
+import java.security.acl.Owner;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 
 import br.com.anteros.core.utils.StringUtils;
+import br.com.anteros.mobile.core.synchronism.model.ActionSynchronism;
+import br.com.anteros.mobile.core.synchronism.model.ApplicationSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.FieldSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.ParameterSynchronism;
 import br.com.anteros.mobile.core.synchronism.model.Synchronism;
@@ -540,7 +544,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 		}
 	}
 
-	protected void saveData() {
+	protected void saveData() throws UnsupportedEncodingException {
 		if (!StringUtils.isEmpty(fldId.getValue() + "")) {
 			tableSynchronism.setId(new Long(fldId.getValue() + ""));
 		}
@@ -548,7 +552,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 		tableSynchronism.setDescription(fldDescription.getValue() + "");
 		tableSynchronism.setTableNameMobile(fldTableNameMobile.getValue() + "");
 		String s = (fldTableSQL.getValue() + "");
-		tableSynchronism.setTableSql(s.getBytes());
+		tableSynchronism.setTableSql(s.getBytes(MobileServerData.getMobileServerContext(app).getCharsetName()));
 		tableSynchronism.setObjectOwner(objectOwner);
 		if (objectOwner.getItems() == null) {
 			objectOwner.setItems(new HashSet<Synchronism>());
@@ -664,7 +668,11 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 			fldTableNameMobile.setValue(tableSynchronism.getTableNameMobile());
 
 		if (tableSynchronism.getTableSql() != null)
-			fldTableSQL.setValue(new String(tableSynchronism.getTableSql()));
+			try {
+				fldTableSQL.setValue(new String(tableSynchronism.getTableSql(), MobileServerData.getMobileServerContext(app).getCharsetName()));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 	}
 
 	public Object getSelectedField() {

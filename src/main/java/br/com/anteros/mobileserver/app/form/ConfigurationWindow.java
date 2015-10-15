@@ -72,6 +72,7 @@ public class ConfigurationWindow extends Window implements ClickListener {
 		configurationForm.getCbTipoPool().setValue(mobileServerContext.getConnectionPoolType());
 		configurationForm.getFldJNDI().setValue(mobileServerContext.getJndiName());
 		configurationForm.getFldQueryTimeout().setValue(mobileServerContext.getQueryTimeout());
+		configurationForm.getCbCharset().setValue(mobileServerContext.getCharsetName());
 	}
 
 	private void savePreferences() {
@@ -88,7 +89,7 @@ public class ConfigurationWindow extends Window implements ClickListener {
 						.getValue() + "", configurationForm.getCbTipoPool()
 						.getValue() + "", configurationForm.getFldJNDI()
 						.getValue() + "",new Integer(configurationForm
-								.getFldQueryTimeout().getValue() + ""));
+								.getFldQueryTimeout().getValue() + ""), configurationForm.getCbCharset().getValue() + "");
 	}
 
 	public void buttonClick(ClickEvent event) {

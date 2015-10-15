@@ -15,11 +15,13 @@
  ******************************************************************************/
 package br.com.anteros.mobileserver.app.form;
 
+import br.com.anteros.core.utils.AnterosStandardsCharsets;
 import br.com.anteros.mobileserver.app.MobileServerContext;
 import br.com.anteros.mobileserver.controller.PoolDatasource;
 
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
@@ -72,6 +74,8 @@ public class ConfigurationForm extends CustomComponent {
 	private Label lblQueryTimeout;
 	private Label lblQueryTimeoutSeconds;
 	private TextField fldQueryTimeout;
+	private ComboBox cbCharset;
+	private Label lblCharset;
 
 	public ConfigurationForm() {
 		buildMainLayout();
@@ -107,6 +111,25 @@ public class ConfigurationForm extends CustomComponent {
 		lblDialect.setWidth("-1px");
 		lblDialect.setHeight("-1px");
 		lblDialect.setValue("Dialeto");
+		
+		// cbCharset
+		cbCharset = new ComboBox();
+		cbCharset.setImmediate(false);
+		cbCharset.setWidth("-1px");
+		cbCharset.setHeight("-1px");
+		cbCharset.addItem(AnterosStandardsCharsets.ISO_8859_1.name());
+		cbCharset.addItem(AnterosStandardsCharsets.US_ASCII.name());
+		cbCharset.addItem(AnterosStandardsCharsets.UTF_16.name());
+		cbCharset.addItem(AnterosStandardsCharsets.UTF_16BE.name());
+		cbCharset.addItem(AnterosStandardsCharsets.UTF_16LE.name());
+		cbCharset.addItem(AnterosStandardsCharsets.UTF_8.name());
+		
+		// lblCharset
+		lblCharset = new Label();
+		lblCharset.setImmediate(false);
+		lblCharset.setWidth("-1px");
+		lblCharset.setHeight("-1px");
+		lblCharset.setValue("Charset");
 
 		// fldURL
 		fldURL = new TextField();
@@ -375,6 +398,8 @@ public class ConfigurationForm extends CustomComponent {
 
 		mainLayout.addComponent(cbDialect, "top:20.0px;left:269.0px;");
 		mainLayout.addComponent(lblDialect, "top:17.0px;left:223.0px;");
+		mainLayout.addComponent(cbCharset, "top:20.0px;left:569.0px;");
+		mainLayout.addComponent(lblCharset, "top:17.0px;left:519.0px;");
 		mainLayout.addComponent(fldURL, "top:44.0px;left:269.0px;");
 		mainLayout.addComponent(lblURL, "top:41.0px;left:195.0px;");
 		mainLayout.addComponent(fldUser, "top:69.0px;left:269.0px;");
@@ -495,6 +520,10 @@ public class ConfigurationForm extends CustomComponent {
 
 	public void setFldQueryTimeout(TextField fldQueryTimeout) {
 		this.fldQueryTimeout = fldQueryTimeout;
+	}
+
+	public ComboBox getCbCharset() {
+		return cbCharset;
 	}
 
 }

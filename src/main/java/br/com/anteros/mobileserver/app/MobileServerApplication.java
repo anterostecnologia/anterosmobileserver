@@ -45,6 +45,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -146,6 +147,8 @@ public class MobileServerApplication extends Application implements ValueChangeL
 	private Embedded imgArchiteture;
 
 	private Button btnDuplicateAction;
+	private VerticalLayout verticalVersaoLayout;
+	private Label lblVersao;
 
 	public void init() {
 		buildMainLayout();
@@ -211,6 +214,21 @@ public class MobileServerApplication extends Application implements ValueChangeL
 		imgArchiteture.setMimeType("image/png");
 		verticalHomeLayout.addComponent(imgArchiteture);
 		verticalHomeLayout.setComponentAlignment(imgArchiteture, Alignment.MIDDLE_CENTER);
+		
+		verticalVersaoLayout = new VerticalLayout();
+		verticalVersaoLayout.setSizeFull();
+
+		lblVersao = new Label();
+		lblVersao.setImmediate(false);
+		lblVersao.setWidth("-1px");
+		lblVersao.setHeight("-1px");
+		lblVersao.setValue(" Anteros Mobile Server v1.0.2");
+		
+		verticalVersaoLayout.addComponent(lblVersao);
+		verticalVersaoLayout.setComponentAlignment(lblVersao, Alignment.BOTTOM_LEFT);
+		
+		verticalHomeLayout.addComponent(verticalVersaoLayout);
+		
 		pageControl.addTab(verticalHomeLayout, "Home");
 	}
 

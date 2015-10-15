@@ -15,6 +15,7 @@
  ******************************************************************************/
 package br.com.anteros.mobileserver.app.form;
 
+import br.com.anteros.core.utils.AnterosStandardsCharsets;
 import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobile.core.synchronism.model.ApplicationSynchronism;
 import br.com.anteros.mobileserver.app.MobileServerApplication;
@@ -72,6 +73,7 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 	private CheckBox chActive;
 	private ComboBox cbPoolType;
 	private AbstractField fldJNDI;
+	private ComboBox cbCharset;
 
 	public ApplicationForm(MobileServerApplication app, ApplicationSynchronism applicationSynchronism) {
 		this.app = app;
@@ -142,6 +144,21 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 		cbDialect.setCaption("Dialeto");
 		cbDialect.setRequiredError("Informe a dialeto da aplicação.");
 		cbDialect.setStyleName("small");
+		
+		cbCharset = new ComboBox();
+		cbCharset.setImmediate(false);
+		cbCharset.setWidth("157px");
+		cbCharset.setHeight("-1px");
+		cbCharset.addItem(AnterosStandardsCharsets.ISO_8859_1.name());
+		cbCharset.addItem(AnterosStandardsCharsets.US_ASCII.name());
+		cbCharset.addItem(AnterosStandardsCharsets.UTF_16.name());
+		cbCharset.addItem(AnterosStandardsCharsets.UTF_16BE.name());
+		cbCharset.addItem(AnterosStandardsCharsets.UTF_16LE.name());
+		cbCharset.addItem(AnterosStandardsCharsets.UTF_8.name());
+		cbCharset.setRequired(true);
+		cbCharset.setCaption("Charset");
+		cbCharset.setRequiredError("Informe o charset da aplicação.");
+		cbCharset.setStyleName("small");
 
 		fldURL = new TextField();
 		fldURL.setImmediate(false);
@@ -245,6 +262,7 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 		applicationForm.addField("fldURL", fldURL);
 		applicationForm.addField("fldUser", fldUser);
 		applicationForm.addField("fldPassword", fldPassword);
+		applicationForm.addField("cbCharset", cbCharset);
 		applicationForm.addField("fldInitPoolSize", fldInitPoolSize);
 		applicationForm.addField("fldMinPoolSize", fldMinPoolSize);
 		applicationForm.addField("fldMaxPoolSize", fldMaxPoolSize);
@@ -354,6 +372,8 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 			chActive.setValue(true);
 		else
 			chActive.setValue(false);
+		if (applicationSynchronism.getCharsetName() != null)
+			cbCharset.setValue(applicationSynchronism.getCharsetName());
 	}
 
 	private void saveData() {
@@ -397,6 +417,8 @@ public class ApplicationForm extends VerticalLayout implements ClickListener {
 			driverClass = org.postgresql.Driver.class;
 		applicationSynchronism.setDriverClass(driverClass.getName());
 		applicationSynchronism.setJdbcUrl(fldURL.getValue() + "");
+		if (!StringUtils.isEmpty(cbCharset.getValue() + ""))
+			applicationSynchronism.setCharsetName(cbCharset.getValue() + "");
 	}
 
 }

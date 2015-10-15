@@ -1,5 +1,6 @@
 package br.com.anteros.mobileserver.app;
 
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -55,6 +56,7 @@ public class MobileServerContext {
 	private String defaultSchema;
 	private String defaultCatalog;
 	private String dialect;
+	private String charsetName;
 	private String accessUser = "admin";
 	private String accessPassword = "1234789";
 	private String connectionPoolType = PoolDatasource.POOL_C3P0;
@@ -126,7 +128,8 @@ public class MobileServerContext {
 								(applicationSynchronism.getDefaultCatalog() == null ? "" : applicationSynchronism.getDefaultCatalog()))
 						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA, applicationSynchronism.getDefaultSchema())
 						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
-						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, applicationSynchronism.getName()).buildSessionFactory();
+						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, applicationSynchronism.getName())
+						.addProperty(AnterosPersistenceProperties.CHARSET_NAME, applicationSynchronism.getCharsetName()).buildSessionFactory();
 				sessionFactories.put(applicationSynchronism, sqlSessionFactory);
 			} else
 				LOG.error("Ocorreu um erro inicializando pool de conexões da aplicação com nome " + "[" + applicationSynchronism.getName() + "]"
@@ -174,7 +177,8 @@ public class MobileServerContext {
 						.addProperty(AnterosPersistenceProperties.JDBC_CATALOG, defaultCatalog)
 						.addProperty(AnterosPersistenceProperties.JDBC_SCHEMA, defaultSchema)
 						.addProperty(AnterosPersistenceProperties.QUERY_TIMEOUT, queryTimeout + "")
-						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, "Anteros Mobile Srv Dictionary").buildSessionFactory();
+						.addProperty(AnterosPersistenceProperties.CONNECTION_CLIENTINFO, "Anteros Mobile Srv Dictionary")
+						.addProperty(AnterosPersistenceProperties.CHARSET_NAME, charsetName).buildSessionFactory();
 			}
 		}
 		return sessionFactory;
@@ -202,11 +206,12 @@ public class MobileServerContext {
 		connectionPoolType = anterosPrefs.get("connectionPoolType", PoolDatasource.POOL_C3P0);
 		jndiName = anterosPrefs.get("jndiName", "");
 		queryTimeout = anterosPrefs.getInt("queryTimeout", 20);
+		charsetName = anterosPrefs.get("charsetName", "ISO-8859-1");
 	}
 
 	public void writePreferences(String jdbcUrl, String user, String password, int acquireIncrement, int initialPoolSize, int maxPoolSize,
 			int minPoolSize, boolean showSql, String dialect, boolean formatSql, String defaultSchema, String defaultCatalog, String accessUser,
-			String accessPassword, String connectionPoolType, String jndiName, int queryTimeout) {
+			String accessPassword, String connectionPoolType, String jndiName, int queryTimeout, String charsetName) {
 		this.jdbcUrl = jdbcUrl;
 		this.user = user;
 		this.password = password;
@@ -224,6 +229,7 @@ public class MobileServerContext {
 		this.connectionPoolType = connectionPoolType;
 		this.jndiName = jndiName;
 		this.queryTimeout = queryTimeout;
+		this.charsetName = charsetName;
 
 		Preferences prefsRoot = Preferences.userRoot();
 		Preferences anterosPrefs = prefsRoot.node("anteros/mobile/server/preferences");
@@ -259,6 +265,7 @@ public class MobileServerContext {
 		anterosPrefs.put("accessPassword", this.accessPassword);
 		anterosPrefs.put("connectionPoolType", this.connectionPoolType);
 		anterosPrefs.put("jndiName", this.jndiName);
+		anterosPrefs.put("charsetName", this.charsetName);
 	}
 
 	public MobileSession getMobileSession(HttpSession httpSession) {
@@ -444,6 +451,10 @@ public class MobileServerContext {
 
 	public void setQueryTimeout(int queryTimeout) {
 		this.queryTimeout = queryTimeout;
+	}
+
+	public String getCharsetName() {
+		return charsetName;
 	}
 
 }

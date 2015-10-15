@@ -67,7 +67,8 @@ public class MobileSessionListener implements HttpSessionBindingListener, HttpSe
 				.getAttribute(MobileContextListener.MOBILE_SERVER_CONTEXT);
 		MobileSession mSession = mobileServerContext.removeMobileSession(sessionEvent.getSession());
 		try {
-			mSession.closeSessions();
+			if (mSession != null)
+				mSession.closeSessions();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
