@@ -191,6 +191,17 @@ public class MobileServerApplication extends Application implements ValueChangeL
 		verticalStatusBar.setHeight("25px");
 		verticalStatusBar.setMargin(false);
 		verticalStatusBar.setStyleName("statusbar");
+		
+		lblVersao = new Label();
+		lblVersao.setImmediate(false);
+		lblVersao.setWidth("-1px");
+		lblVersao.setHeight("-1px");
+		lblVersao.setValue(" Anteros Mobile Server v1.0.3");
+
+		verticalStatusBar.addComponent(lblVersao);
+		verticalStatusBar.setComponentAlignment(lblVersao, Alignment.MIDDLE_LEFT);
+		verticalStatusBar.setMargin(false, false, false, true);
+		
 		verticalMainLayout.addComponent(verticalStatusBar);
 	}
 
@@ -214,21 +225,12 @@ public class MobileServerApplication extends Application implements ValueChangeL
 		imgArchiteture.setMimeType("image/png");
 		verticalHomeLayout.addComponent(imgArchiteture);
 		verticalHomeLayout.setComponentAlignment(imgArchiteture, Alignment.MIDDLE_CENTER);
-		
+
 		verticalVersaoLayout = new VerticalLayout();
 		verticalVersaoLayout.setSizeFull();
 
-		lblVersao = new Label();
-		lblVersao.setImmediate(false);
-		lblVersao.setWidth("-1px");
-		lblVersao.setHeight("-1px");
-		lblVersao.setValue(" Anteros Mobile Server v1.0.2");
-		
-		verticalVersaoLayout.addComponent(lblVersao);
-		verticalVersaoLayout.setComponentAlignment(lblVersao, Alignment.BOTTOM_LEFT);
-		
 		verticalHomeLayout.addComponent(verticalVersaoLayout);
-		
+
 		pageControl.addTab(verticalHomeLayout, "Home");
 	}
 
@@ -697,17 +699,15 @@ public class MobileServerApplication extends Application implements ValueChangeL
 	};
 
 	private void enableActions(Object selectedObject) {
-		boolean isFields = false;
-		boolean isParameters = false;
-		if (selectedObject instanceof Item) {
-			isFields = (CAPTION_FIELDS.equals((((Item) selectedObject)).getItemProperty(MobileServerData.PROPERTY_NAME)
-					.getValue()));
-			isParameters = (CAPTION_PARAMETERS.equals((((Item) selectedObject)).getItemProperty(
-					MobileServerData.PROPERTY_NAME).getValue()));
-		}
+		boolean isFields = isFields();
+		boolean isParameters = isParameters();
 
 		btnAddApplication.setVisible(true);
-		btnRemoveApplication.setEnabled((selectedObject instanceof ApplicationSynchronism));
+
+		btnRemoveApplication.setEnabled(selectedObject instanceof ApplicationSynchronism
+				&& ((ApplicationSynchronism) selectedObject).getItems() != null
+				&& ((ApplicationSynchronism) selectedObject).getItems().size() == 0);
+
 		btnEditApplication.setEnabled((selectedObject instanceof ApplicationSynchronism));
 
 		btnAddAction.setVisible((selectedObject instanceof ApplicationSynchronism)
@@ -719,69 +719,94 @@ public class MobileServerApplication extends Application implements ValueChangeL
 		btnDuplicateAction.setVisible((selectedObject instanceof ApplicationSynchronism)
 				|| (selectedObject instanceof ActionSynchronism));
 
-		btnRemoveAction.setEnabled(selectedObject instanceof ActionSynchronism);
+		btnAddAction.setEnabled(selectedObject instanceof ApplicationSynchronism
+				&& (((ApplicationSynchronism) selectedObject).getItems() != null)
+				&& (((ApplicationSynchronism) selectedObject).getItems().size() > 0));
+
+		btnRemoveAction.setEnabled(selectedObject instanceof ActionSynchronism
+				&& ((ActionSynchronism) selectedObject).getItems() != null
+				&& ((ActionSynchronism) selectedObject).getItems().size() == 0);
+
 		btnEditAction.setEnabled(selectedObject instanceof ActionSynchronism);
 		btnDuplicateAction.setEnabled(selectedObject instanceof ActionSynchronism);
 
 		btnAddTable.setVisible((selectedObject instanceof ActionSynchronism)
 				|| (selectedObject instanceof TableSynchronism));
-		if (btnAddTable.isVisible()) {
-			if (selectedObject instanceof ActionSynchronism) {
-				if ((((ActionSynchronism) selectedObject).getItems() != null)
-						&& (((ActionSynchronism) selectedObject).getItems().size() > 0)) {
-					btnAddTable.setVisible(false);
-				}
-			}
-		}
 		btnRemoveTable.setVisible((selectedObject instanceof ActionSynchronism)
 				|| (selectedObject instanceof TableSynchronism));
 		btnEditTable.setVisible((selectedObject instanceof ActionSynchronism)
 				|| (selectedObject instanceof TableSynchronism));
-		btnRemoveTable.setEnabled(selectedObject instanceof TableSynchronism);
-		btnEditTable.setEnabled(selectedObject instanceof TableSynchronism);
+
+		if (btnAddTable.isVisible()) {
+			btnAddTable.setEnabled(selectedObject instanceof ActionSynchronism
+					&& ((((ActionSynchronism) selectedObject).getItems() == null)
+					|| (((ActionSynchronism) selectedObject).getItems().size() == 0)));
+		}
+
+		btnRemoveTable.setEnabled(selectedObject instanceof TableSynchronism
+				&& ((TableSynchronism) selectedObject).getItems() != null
+				&& ((TableSynchronism) selectedObject).getItems().size() == 0);
+
+		btnEditTable.setEnabled(selectedObject instanceof TableSynchronism && !isFields && !isParameters);
 
 		btnAddProcedure.setVisible((selectedObject instanceof ActionSynchronism)
 				|| (selectedObject instanceof ProcedureSynchronism));
-		if (btnAddProcedure.isVisible()) {
-			if (selectedObject instanceof ActionSynchronism) {
-				if ((((ActionSynchronism) selectedObject).getItems() != null)
-						&& (((ActionSynchronism) selectedObject).getItems().size() > 0)) {
-					btnAddProcedure.setVisible(false);
-				}
-			}
-		}
 		btnRemoveProcedure.setVisible((selectedObject instanceof ActionSynchronism)
 				|| (selectedObject instanceof ProcedureSynchronism));
 		btnEditProcedure.setVisible((selectedObject instanceof ActionSynchronism)
 				|| (selectedObject instanceof ProcedureSynchronism));
-		btnRemoveProcedure.setEnabled(selectedObject instanceof ProcedureSynchronism);
+
+		if (btnAddProcedure.isVisible()) {
+			btnAddProcedure.setEnabled(selectedObject instanceof ActionSynchronism
+					&& ((((ActionSynchronism) selectedObject).getItems() == null)
+					|| (((ActionSynchronism) selectedObject).getItems().size() == 0)));
+		}
+
+		btnRemoveProcedure.setEnabled(selectedObject instanceof ProcedureSynchronism
+				&& ((ProcedureSynchronism) selectedObject).getItems() != null
+				&& ((ProcedureSynchronism) selectedObject).getItems().size() == 0);
+
 		btnEditProcedure.setEnabled(selectedObject instanceof ProcedureSynchronism);
 
 		btnAddFieldTable
-				.setVisible(((selectedObject instanceof TableSynchronism) || (selectedObject instanceof FieldSynchronism))
-						|| isFields);
+				.setVisible((((selectedObject instanceof TableSynchronism) || (selectedObject instanceof FieldSynchronism))
+						|| isFields) && !isParameters);
 		btnRemoveFieldTable
-				.setVisible(((selectedObject instanceof TableSynchronism) || (selectedObject instanceof FieldSynchronism))
-						|| isFields);
+				.setVisible((((selectedObject instanceof TableSynchronism) || (selectedObject instanceof FieldSynchronism))
+						|| isFields) && !isParameters);
 		btnEditFieldTable
-				.setVisible(((selectedObject instanceof TableSynchronism) || (selectedObject instanceof FieldSynchronism))
-						|| isFields);
-		btnRemoveFieldTable.setEnabled(selectedObject instanceof FieldSynchronism);
+				.setVisible((((selectedObject instanceof TableSynchronism) || (selectedObject instanceof FieldSynchronism))
+						|| isFields) && !isParameters);
+		
+		if (btnAddFieldTable.isVisible())
+			btnAddFieldTable.setEnabled(selectedObject instanceof TableSynchronism || isFields);
+
+		btnRemoveFieldTable.setEnabled(selectedObject instanceof FieldSynchronism
+				&& ((FieldSynchronism) selectedObject).getItems() != null
+				&& ((FieldSynchronism) selectedObject).getItems().size() == 0);
+
 		btnEditFieldTable.setEnabled(selectedObject instanceof FieldSynchronism);
 
 		btnAddParameter
-				.setVisible(((selectedObject instanceof TableSynchronism)
-						|| (selectedObject instanceof ProcedureSynchronism) || (selectedObject instanceof ParameterSynchronism))
-						|| isParameters);
+				.setVisible((((selectedObject instanceof TableSynchronism) || (selectedObject instanceof ProcedureSynchronism)
+						|| (selectedObject instanceof ParameterSynchronism))
+						|| isParameters) && !isFields);
 		btnRemoveParameter
-				.setVisible(((selectedObject instanceof TableSynchronism)
-						|| (selectedObject instanceof ProcedureSynchronism) || (selectedObject instanceof ParameterSynchronism))
-						|| isParameters);
+				.setVisible((((selectedObject instanceof TableSynchronism) || (selectedObject instanceof ProcedureSynchronism)
+						|| (selectedObject instanceof ParameterSynchronism))
+						|| isParameters) && !isFields);
 		btnEditParameter
-				.setVisible(((selectedObject instanceof TableSynchronism)
-						|| (selectedObject instanceof ProcedureSynchronism) || (selectedObject instanceof ParameterSynchronism))
-						|| isParameters);
-		btnRemoveParameter.setEnabled(selectedObject instanceof ParameterSynchronism);
+				.setVisible((((selectedObject instanceof TableSynchronism) || (selectedObject instanceof ProcedureSynchronism)
+						|| (selectedObject instanceof ParameterSynchronism))
+						|| isParameters) && !isFields);
+		
+		if (btnAddParameter.isVisible())
+			btnAddParameter.setEnabled(selectedObject instanceof TableSynchronism || selectedObject instanceof ProcedureSynchronism || isParameters);
+
+		btnRemoveParameter.setEnabled(selectedObject instanceof ParameterSynchronism
+				&& ((ParameterSynchronism) selectedObject).getItems() != null
+				&& ((ParameterSynchronism) selectedObject).getItems().size() == 0);
+
 		btnEditParameter.setEnabled(selectedObject instanceof ParameterSynchronism);
 
 		btnRun.setVisible(selectedObject instanceof ActionSynchronism);

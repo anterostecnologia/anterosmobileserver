@@ -48,7 +48,6 @@ import com.vaadin.terminal.ThemeResource;
 import com.vaadin.terminal.gwt.server.WebApplicationContext;
 import com.vaadin.ui.Window;
 
-@SuppressWarnings("unchecked")
 public class MobileServerData {
 
 	public static final Object PROPERTY_NAME = "name";
@@ -104,9 +103,11 @@ public class MobileServerData {
 				for (ApplicationSynchronism app : applications) {
 					hwContainer.removeItem(app.getId());
 					item = hwContainer.addItem(app.getId());
-					item.getItemProperty(PROPERTY_NAME).setValue(app.getName() + " " + app.getId());
-					item.getItemProperty(PROPERTY_DATA).setValue(app);
-					hwContainer.setChildrenAllowed(app.getId(), true);
+					if (item != null) {
+						item.getItemProperty(PROPERTY_NAME).setValue(app.getName() + " " + app.getId());
+						item.getItemProperty(PROPERTY_DATA).setValue(app);
+						hwContainer.setChildrenAllowed(app.getId(), true);
+					}
 				}
 			}
 			sqlSession.getTransaction().commit();
@@ -164,7 +165,6 @@ public class MobileServerData {
 				hwContainer.setParent(action.getId(), app.getId());
 			}
 		}
-
 	}
 
 	public static void loadTablesAndProcedures(MobileServerApplication application, Item itemToLoad) {
@@ -213,7 +213,6 @@ public class MobileServerData {
 				hwContainer.setParent(synchronism.getId(), action.getId());
 			}
 		}
-
 	}
 
 	public static void loadTableFields(MobileServerApplication application, Item itemToLoad) {
@@ -245,24 +244,26 @@ public class MobileServerData {
 		HierarchicalContainer hwContainer = (HierarchicalContainer) application.getTree().getContainerDataSource();
 
 		item = hwContainer.addItem(ID_TABLE_FIELDS + table.getId());
-		item.getItemProperty(PROPERTY_NAME).setValue("Campos");
-		item.getItemProperty(PROPERTY_ICON).setValue(FIELDS_IMG);
-		hwContainer.setChildrenAllowed(ID_TABLE_FIELDS + table.getId(), true);
-		hwContainer.setParent(ID_TABLE_FIELDS + table.getId(), table.getId());
+		if (item != null) {
+			item.getItemProperty(PROPERTY_NAME).setValue("Campos");
+			item.getItemProperty(PROPERTY_ICON).setValue(FIELDS_IMG);
+			item.getItemProperty(PROPERTY_DATA).setValue(table);
+			hwContainer.setChildrenAllowed(ID_TABLE_FIELDS + table.getId(), true);
+			hwContainer.setParent(ID_TABLE_FIELDS + table.getId(), table.getId());
 
-		if (fields != null) {
+			if (fields != null) {
 
-			for (FieldSynchronism field : fields) {
-				hwContainer.removeItemRecursively(field.getId());
-				item = hwContainer.addItem(field.getId());
-				item.getItemProperty(PROPERTY_NAME).setValue(field.getName() + " " + field.getId());
-				item.getItemProperty(PROPERTY_DATA).setValue(field);
-				item.getItemProperty(PROPERTY_ICON).setValue(FIELD_IMG);
-				hwContainer.setChildrenAllowed(field.getId(), false);
-				hwContainer.setParent(field.getId(), ID_TABLE_FIELDS + table.getId());
+				for (FieldSynchronism field : fields) {
+					hwContainer.removeItemRecursively(field.getId());
+					item = hwContainer.addItem(field.getId());
+					item.getItemProperty(PROPERTY_NAME).setValue(field.getName() + " " + field.getId());
+					item.getItemProperty(PROPERTY_DATA).setValue(field);
+					item.getItemProperty(PROPERTY_ICON).setValue(FIELD_IMG);
+					hwContainer.setChildrenAllowed(field.getId(), false);
+					hwContainer.setParent(field.getId(), ID_TABLE_FIELDS + table.getId());
+				}
 			}
 		}
-
 	}
 
 	public static void loadTableParameters(MobileServerApplication application, Item itemToLoad) {
@@ -294,23 +295,25 @@ public class MobileServerData {
 		HierarchicalContainer hwContainer = (HierarchicalContainer) application.getTree().getContainerDataSource();
 
 		item = hwContainer.addItem(ID_TABLE_PARAMETERS + table.getId());
-		item.getItemProperty(PROPERTY_NAME).setValue("Parâmetros");
-		item.getItemProperty(PROPERTY_ICON).setValue(PARAMETERS_IMG);
-		hwContainer.setChildrenAllowed(ID_TABLE_PARAMETERS + table.getId(), true);
-		hwContainer.setParent(ID_TABLE_PARAMETERS + table.getId(), table.getId());
+		if (item != null) {
+			item.getItemProperty(PROPERTY_NAME).setValue("Parâmetros");
+			item.getItemProperty(PROPERTY_ICON).setValue(PARAMETERS_IMG);
+			item.getItemProperty(PROPERTY_DATA).setValue(table);
+			hwContainer.setChildrenAllowed(ID_TABLE_PARAMETERS + table.getId(), true);
+			hwContainer.setParent(ID_TABLE_PARAMETERS + table.getId(), table.getId());
 
-		if (parameters != null) {
-			for (ParameterSynchronism parameter : parameters) {
-				hwContainer.removeItem(parameter.getId());
-				item = hwContainer.addItem(parameter.getId());
-				item.getItemProperty(PROPERTY_NAME).setValue(parameter.getName() + " " + parameter.getId());
-				item.getItemProperty(PROPERTY_DATA).setValue(parameter);
-				item.getItemProperty(PROPERTY_ICON).setValue(PARAMETER_IMG);
-				hwContainer.setChildrenAllowed(parameter.getId(), false);
-				hwContainer.setParent(parameter.getId(), ID_TABLE_PARAMETERS + table.getId());
+			if (parameters != null) {
+				for (ParameterSynchronism parameter : parameters) {
+					hwContainer.removeItem(parameter.getId());
+					item = hwContainer.addItem(parameter.getId());
+					item.getItemProperty(PROPERTY_NAME).setValue(parameter.getName() + " " + parameter.getId());
+					item.getItemProperty(PROPERTY_DATA).setValue(parameter);
+					item.getItemProperty(PROPERTY_ICON).setValue(PARAMETER_IMG);
+					hwContainer.setChildrenAllowed(parameter.getId(), false);
+					hwContainer.setParent(parameter.getId(), ID_TABLE_PARAMETERS + table.getId());
+				}
 			}
 		}
-
 	}
 
 	public static void loadProcedureParameters(MobileServerApplication application, Item itemToLoad) {
@@ -336,6 +339,7 @@ public class MobileServerData {
 		item = hwContainer.addItem(ID_PROCEDURE_PARAMETERS + procedure.getId());
 		item.getItemProperty(PROPERTY_NAME).setValue("Parâmetros");
 		item.getItemProperty(PROPERTY_ICON).setValue(PARAMETERS_IMG);
+		item.getItemProperty(PROPERTY_DATA).setValue(procedure);
 		hwContainer.setChildrenAllowed(ID_PROCEDURE_PARAMETERS + procedure.getId(), true);
 		hwContainer.setParent(ID_PROCEDURE_PARAMETERS + procedure.getId(), procedure.getId());
 
@@ -356,7 +360,7 @@ public class MobileServerData {
 		MobileSession mobileSession = getMobileSession(application);
 		SQLSession sqlSession = mobileSession.getSynchronismManager().getSqlSession();
 		sqlSession.setClientId("ANTEROS_MOBILE_SERVER");
-		sqlSession.setClientInfo("Anteros Mobile Srv WebAdm SID:"+mobileSession.getHttpSession().getId());
+		sqlSession.setClientInfo("Anteros Mobile Srv WebAdm SID:" + mobileSession.getHttpSession().getId());
 		return sqlSession;
 	}
 
@@ -365,7 +369,7 @@ public class MobileServerData {
 		MobileSession mobileSession = getMobileServerContext(application).getMobileSession(httpSession);
 		return mobileSession;
 	}
-	
+
 	public static HttpSession getHttpSession(Application application) throws Exception {
 		return ((WebApplicationContext) application.getContext()).getHttpSession();
 	}
@@ -467,7 +471,7 @@ public class MobileServerData {
 		ApplicationSynchronism app = (ApplicationSynchronism) action.getObjectOwner();
 		SynchronismManager synchronismManager = getMobileSession(application).getSynchronismManager(app);
 		SQLSession sqlSession = synchronismManager.getSqlSession();
-		sqlSession.setClientInfo(app.getName()+" WebClient SID:"+getHttpSession(application).getId());
+		sqlSession.setClientInfo(app.getName() + " WebClient SID:" + getHttpSession(application).getId());
 
 		MobileRequest mr = new MobileRequest();
 
@@ -517,39 +521,41 @@ public class MobileServerData {
 
 	public static boolean save(MobileServerApplication application, Synchronism synchronism) throws Exception {
 		SQLSession sqlSession = getSQLSession(application);
+		sqlSession.getTransaction().begin();
 		try {
-			sqlSession.getTransaction().begin();
 			sqlSession.save(synchronism);
 			sqlSession.getTransaction().commit();
 			return true;
 		} catch (Exception e) {
-			try {
-				e.printStackTrace();
-				sqlSession.getTransaction().rollback();
-			} catch (Exception e1) {
-			}
+			e.printStackTrace();
+			sqlSession.getTransaction().rollback();
 			new UserMessages(application.getMainWindow()).error(e.getMessage());
 		}
 		return false;
 	}
 
 	public static boolean remove(MobileServerApplication application, Synchronism synchronism) {
-		SQLSession sqlSession;
+		SQLSession sqlSession = null;
 		try {
 			sqlSession = getSQLSession(application);
+			sqlSession.getTransaction().begin();
+			sqlSession.remove(synchronism);
+			sqlSession.getTransaction().commit();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			String message;
+			if (e.getMessage() != null && !e.getMessage().equals(""))
+				message = e.getMessage();
+			else
+				message = e.getCause().getMessage();
 			try {
-				sqlSession.remove(synchronism);
-				sqlSession.getTransaction().commit();
-				return true;
-			} catch (Exception e) {
 				sqlSession.getTransaction().rollback();
-				new UserMessages(application.getMainWindow()).error(e.getMessage());
+			} catch (Exception e1) {
+			} finally {
+				new UserMessages(application.getMainWindow()).error(message);
 			}
-		} catch (Exception e1) {
-			new UserMessages(application.getMainWindow()).error(e1.getMessage());
-			e1.printStackTrace();
 		}
-
 		return false;
 	}
 
@@ -565,8 +571,8 @@ public class MobileServerData {
 				sqlSession.getTransaction().rollback();
 			} catch (Exception e1) {
 			}
-			new UserMessages(application.getMainWindow()).error(e.getMessage());
 		}
+		
 		return null;
 	}
 
@@ -581,5 +587,4 @@ public class MobileServerData {
 	public static boolean isConnected(MobileServerApplication application) {
 		return getMobileServerContext(application).isConnected();
 	}
-
 }

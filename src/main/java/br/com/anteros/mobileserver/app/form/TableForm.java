@@ -17,9 +17,11 @@ package br.com.anteros.mobileserver.app.form;
 
 import java.io.UnsupportedEncodingException;
 import java.security.acl.Owner;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 import br.com.anteros.core.utils.StringUtils;
 import br.com.anteros.mobile.core.synchronism.model.ActionSynchronism;
@@ -86,12 +88,15 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 	private MobileServerApplication app;
 	private TableSynchronism tableSynchronism;
 	private Synchronism objectOwner;
+	private List<Synchronism> itensDeleted;
 
 	public TableForm(MobileServerApplication app, TableSynchronism tableSynchronism, Synchronism objectOwner) {
 		this.setMargin(true);
 		this.app = app;
 		this.tableSynchronism = tableSynchronism;
 		this.objectOwner = objectOwner;
+		this.itensDeleted = new ArrayList<Synchronism>();
+		
 		createForm();
 		createFields();
 		createGrids();
@@ -126,7 +131,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 				"" });
 		gridFields.setSizeFull();
 		gridFields.addListener(new Property.ValueChangeListener() {
-			
+
 			public void valueChange(ValueChangeEvent event) {
 				enableActions();
 			}
@@ -207,7 +212,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 		gridParameters.setColumnWidth("PARAMETER_TYPE", 200);
 		gridParameters.setColumnWidth(MobileServerData.PROPERTY_DATA, 0);
 		gridParameters.addListener(new Property.ValueChangeListener() {
-			
+
 			public void valueChange(ValueChangeEvent event) {
 				enableActions();
 			}
@@ -335,7 +340,6 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 		tableForm.setInvalidCommitted(false);
 	}
 
-	
 	public void buttonClick(ClickEvent event) {
 		final TableForm comp = this;
 		if (event.getSource() == btnAddParameter) {
@@ -345,7 +349,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 			final ParameterWindow parameterWindow = new ParameterWindow(app, parameter, tableSynchronism);
 			getWindow().addWindow(parameterWindow);
 			parameterWindow.addListener(new CloseListener() {
-				
+
 				public void windowClose(CloseEvent e) {
 					if (parameterWindow.getFormParameter().getLastAction() == UserMessages.USER_CONFIRM_OK) {
 						addParameterDataSource((IndexedContainer) gridParameters.getContainerDataSource(), parameter);
@@ -358,7 +362,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 			if (selectedParameter != null) {
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Remover o parâmetro " + selectedParameter.getName() + " ?", new ClickListener() {
-					
+
 					public void buttonClick(ClickEvent event) {
 						userMessages.removeConfirm();
 						if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK)) {
@@ -367,6 +371,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 								tableSynchronism.setItems(new LinkedHashSet<Synchronism>());
 							}
 							tableSynchronism.getItems().remove(selectedParameter);
+							itensDeleted.add(selectedParameter);
 							enableActions();
 						}
 					}
@@ -378,7 +383,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 				final ParameterWindow parameterWindow = new ParameterWindow(app, selectedParameter, tableSynchronism);
 				getWindow().addWindow(parameterWindow);
 				parameterWindow.addListener(new CloseListener() {
-					
+
 					public void windowClose(CloseEvent e) {
 						if (parameterWindow.getFormParameter().getLastAction() == UserMessages.USER_CONFIRM_OK) {
 							Item item = gridParameters.getItem(selectedParameter.getId());
@@ -408,7 +413,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 			final FieldWindow fieldWindow = new FieldWindow(app, field, tableSynchronism);
 			getWindow().addWindow(fieldWindow);
 			fieldWindow.addListener(new CloseListener() {
-				
+
 				public void windowClose(CloseEvent e) {
 					if (fieldWindow.getFieldForm().getLastAction() == UserMessages.USER_CONFIRM_OK) {
 						addFieldDataSource((IndexedContainer) gridFields.getContainerDataSource(), field);
@@ -421,7 +426,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 			if (selectedField != null) {
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Remover o Campo " + selectedField.getName() + " ?", new ClickListener() {
-					
+
 					public void buttonClick(ClickEvent event) {
 						userMessages.removeConfirm();
 						if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK)) {
@@ -430,6 +435,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 								tableSynchronism.setItems(new LinkedHashSet<Synchronism>());
 							}
 							tableSynchronism.getItems().remove(selectedField);
+							itensDeleted.add(selectedField);
 							enableActions();
 						}
 					}
@@ -441,7 +447,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 				final FieldWindow fieldWindow = new FieldWindow(app, selectedField, tableSynchronism);
 				getWindow().addWindow(fieldWindow);
 				fieldWindow.addListener(new CloseListener() {
-					
+
 					public void windowClose(CloseEvent e) {
 						if (fieldWindow.getFieldForm().getLastAction() == UserMessages.USER_CONFIRM_OK) {
 							Item item = gridFields.getItem(selectedField.getId());
@@ -466,7 +472,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 			if (this.getParent() instanceof TabSheet) {
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				userMessages.confirm("Cancelar a Edição da Aplicação?", new ClickListener() {
-					
+
 					public void buttonClick(ClickEvent event) {
 						if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK)) {
 							refreshAndClose(comp);
@@ -481,7 +487,7 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 				final UserMessages userMessages = new UserMessages(app.getMainWindow());
 				final Form f = tableForm;
 				userMessages.confirm("Gravar os dados?", new ClickListener() {
-					
+
 					public void buttonClick(ClickEvent event) {
 						userMessages.removeConfirm();
 						if (event.getButton().getData().equals(UserMessages.USER_CONFIRM_OK)) {
@@ -495,13 +501,19 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 											child.setId(null);
 									}
 								}
+								for (Synchronism deleted : itensDeleted) {
+									MobileServerData.remove(app, deleted);
+								}
 								if (MobileServerData.save(app, tableSynchronism)) {
 									refreshAndClose(comp);
+									if (objectOwner.getItems() == null) {
+										objectOwner.setItems(new HashSet<Synchronism>());
+									}
+									objectOwner.getItems().add(tableSynchronism);
 								}
 							} catch (Exception e) {
-								getWindow()
-										.showNotification("Atenção", e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
-
+								e.printStackTrace();
+								getWindow().showNotification("Atenção", e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 							}
 						}
 					}
@@ -554,10 +566,6 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 		String s = (fldTableSQL.getValue() + "");
 		tableSynchronism.setTableSql(s.getBytes(MobileServerData.getMobileServerContext(app).getCharsetName()));
 		tableSynchronism.setObjectOwner(objectOwner);
-		if (objectOwner.getItems() == null) {
-			objectOwner.setItems(new HashSet<Synchronism>());
-		}
-		objectOwner.getItems().add(tableSynchronism);
 	}
 
 	private Container getParametersDataSource() {
@@ -631,7 +639,6 @@ public class TableForm extends VerticalLayout implements ClickListener, Selected
 		tableSynchronism.getItems().add(field);
 	}
 
-	
 	public void selectedTabChange(SelectedTabChangeEvent event) {
 		TabSheet tabsheet = event.getTabSheet();
 		Tab tab = tabsheet.getTab(tabsheet.getSelectedTab());

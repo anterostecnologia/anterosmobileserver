@@ -173,7 +173,7 @@ public class FieldForm extends VerticalLayout implements ClickListener {
 				});
 
 			} else if (win != null) {
-				lastAction = UserMessages.USER_CONFIRM_OK;
+				lastAction = UserMessages.USER_CONFIRM_CANCEL;
 				((Window) win.getParent()).removeWindow(win);
 			}
 		} else if (event.getButton() == btnOk) {
@@ -195,6 +195,7 @@ public class FieldForm extends VerticalLayout implements ClickListener {
 									app.getTree().select(fieldSynchronism.getId());
 								}
 							} catch (Exception e) {
+								e.printStackTrace();
 								getWindow()
 										.showNotification("Atenção", e.getMessage(), Notification.TYPE_ERROR_MESSAGE);
 

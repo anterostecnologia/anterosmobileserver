@@ -30,7 +30,7 @@ public class FieldWindow extends Window {
 	public FieldWindow(MobileServerApplication app,
 			FieldSynchronism fieldSynchronism, Synchronism objectOwner) {
 		if ((fieldSynchronism.getId() == null)
-				|| (fieldSynchronism.getId().intValue() == 0)) {
+				|| (fieldSynchronism.getId() <= 0)) {
 			setCaption("Adicionando");
 		} else
 			setCaption("Editando");

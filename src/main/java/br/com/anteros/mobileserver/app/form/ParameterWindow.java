@@ -31,7 +31,7 @@ public class ParameterWindow extends Window {
 	public ParameterWindow(MobileServerApplication app,
 			ParameterSynchronism parameterSynchronism, Synchronism objectOwner) {
 		if ((parameterSynchronism.getId() == null)
-				|| (parameterSynchronism.getId().intValue() == 0)) {
+				|| (parameterSynchronism.getId() <= 0)) {
 			setCaption("Adicionando");
 		} else
 			setCaption("Editando");
