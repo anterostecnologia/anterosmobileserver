@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>br.com.anteros</groupId>
 	<artifactId>Anteros-MobileServer</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 	<packaging>war</packaging>
 
 	<properties>
@@ -15,19 +15,19 @@
 		<dependency>
 			<groupId>br.com.anteros</groupId>
 			<artifactId>Anteros-MobileServer-Core</artifactId>
-			<version>LATEST</version>
+			<version>[1.0.0,)</version>
 		</dependency>
 
 		<dependency>
 			<groupId>br.com.anteros</groupId>
 			<artifactId>Anteros-Bean-Validation</artifactId>
-			<version>LATEST</version>
+			<version>[1.0.0,)</version>
 		</dependency>
 
 		<dependency>
 			<groupId>br.com.anteros</groupId>
 			<artifactId>Anteros-Bean-Validation-Api</artifactId>
-			<version>LATEST</version>
+			<version>[1.0.0,)</version>
 		</dependency>
 
 		<dependency>
